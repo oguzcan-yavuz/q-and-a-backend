@@ -18,9 +18,13 @@ custom:
     useChildProcesses: true
 
 plugins:
+  - serverless-dotenv-plugin
   - serverless-webpack
   - serverless-dynamodb-local
   - serverless-offline
+
+resources:
+  - ${file(./resources/dynamodb-meetings-table.yml)}
 
 provider:
   name: aws
@@ -31,9 +35,10 @@ provider:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
 
 functions:
-  hello:
-    handler: src/handler.hello
+  getMeeting:
+    handler: src/meeting/controller.getMeeting
     events:
       - http:
           method: get
-          path: hello
+          path: meetings/{id}
+          cors: true

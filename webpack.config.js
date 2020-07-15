@@ -11,12 +11,12 @@ module.exports = {
   externals: [nodeExternals()],
   devtool: isLocal ? 'cheap-module-eval-source-map' : 'source-map',
   resolve: {
-    extensions: [ '.js', '.jsx', '.json', '.ts', '.tsx' ]
+    extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
   },
   output: {
     libraryTarget: 'commonjs2',
     path: path.join(__dirname, '.webpack'),
-    filename: '[name].js'
+    filename: '[name].js',
   },
   target: 'node',
   module: {
@@ -50,6 +50,6 @@ module.exports = {
   // ],
   plugins: [],
   optimization: {
-    minimize: true
-  }
+    minimize: true,
+  },
 };

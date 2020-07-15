@@ -1,0 +1,41 @@
+Resources:
+  MeetingsTable:
+    Type: 'AWS::DynamoDB::Table'
+    DeletionPolicy: Retain
+    Properties:
+      TableName: ${self:provider.environment.MEETINGS_TABLE}
+      AttributeDefinitions:
+        -
+          AttributeName: id
+          AttributeType: S
+        -
+          AttributeName: userId
+          AttributeType: S
+      KeySchema:
+        -
+          AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        -
+          IndexName: userId-id-index
+          KeySchema:
+            -
+              AttributeName: userId
+              KeyType: HASH
+            -
+              AttributeName: id
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: ${env:TABLE_READ_THROUGHPUT}
+            WriteCapacityUnits: ${env:TABLE_WRITE_THROUGHPUT}
+      ProvisionedThroughput:
+        ReadCapacityUnits: ${env:TABLE_READ_THROUGHPUT}
+        WriteCapacityUnits: ${env:TABLE_WRITE_THROUGHPUT}
+
+# Print out the table arn and table stream arn
+Outputs:
+  MeetingsTableArn:
+    Value:
+      "Fn::GetAtt": [ MeetingsTable, Arn ]

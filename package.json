@@ -8,9 +8,12 @@
     "offline": "serverless offline start",
     "commit": "npx git-cz",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --format verbose",
-    "lint:fix": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --fix --format verbose"
+    "lint:fix": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --fix --format verbose",
+    "prettier": "prettier --write ."
   },
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "http-status-codes": "^1.4.0",
     "source-map-support": "^0.5.19"
   },
   "devDependencies": {
@@ -23,6 +26,7 @@
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
     "prettier": "^2.0.5",
+    "serverless-dotenv-plugin": "^2.4.2",
     "serverless-dynamodb-local": "^0.2.30",
     "serverless-offline": "^6.4.0",
     "serverless-webpack": "^5.3.2",
