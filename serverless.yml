@@ -2,6 +2,14 @@ service:
   name: q-and-a-backend
 
 custom:
+  dynamodb-offline-port: 8000
+  dynamodb:
+    stages:
+      - dev
+    start:
+      port: ${self:custom.dynamodb-offline-port}
+      dbPath: db/
+      migrate: true
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
