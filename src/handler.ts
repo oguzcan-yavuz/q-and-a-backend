@@ -1,5 +1,5 @@
-import { APIGatewayProxyHandler } from 'aws-lambda'
-import 'source-map-support/register'
+import { APIGatewayProxyHandler } from 'aws-lambda';
+import 'source-map-support/register';
 
 export const hello: APIGatewayProxyHandler = async (event, context) => {
   return {
@@ -12,5 +12,5 @@ export const hello: APIGatewayProxyHandler = async (event, context) => {
       null,
       2
     ),
-  }
-}
+  };
+};
