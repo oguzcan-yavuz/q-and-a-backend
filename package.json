@@ -1,0 +1,33 @@
+{
+  "name": "q-and-a-backend",
+  "version": "1.0.0",
+  "description": "Serverless webpack example using Typescript",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "offline": "serverless offline start",
+    "install:dynamodb": "serverless dynamodb install"
+  },
+  "dependencies": {
+    "source-map-support": "^0.5.19"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@types/aws-lambda": "^8.10.59",
+    "@types/node": "^14.0.23",
+    "babel-loader": "^8.1.0",
+    "cache-loader": "^4.1.0",
+    "serverless-dynamodb-local": "^0.2.39",
+    "serverless-offline": "^6.4.0",
+    "serverless-webpack": "^5.3.2",
+    "ts-loader": "^8.0.1",
+    "typescript": "^3.9.6",
+    "webpack": "^4.43.0",
+    "webpack-node-externals": "^2.5.0"
+  },
+  "author": "The serverless webpack authors (https://github.com/elastic-coders/serverless-webpack)",
+  "license": "MIT",
+  "engines": {
+    "node": "~12.18.2"
+  }
+}
