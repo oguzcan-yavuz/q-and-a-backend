@@ -28,11 +28,11 @@ Resources:
           Projection:
             ProjectionType: ALL
           ProvisionedThroughput:
-            ReadCapacityUnits: ${env:TABLE_READ_THROUGHPUT}
-            WriteCapacityUnits: ${env:TABLE_WRITE_THROUGHPUT}
+            ReadCapacityUnits: ${env:MEETINGS_TABLE_READ_THROUGHPUT}
+            WriteCapacityUnits: ${env:MEETINGS_TABLE_WRITE_THROUGHPUT}
       ProvisionedThroughput:
-        ReadCapacityUnits: ${env:TABLE_READ_THROUGHPUT}
-        WriteCapacityUnits: ${env:TABLE_WRITE_THROUGHPUT}
+        ReadCapacityUnits: ${env:MEETINGS_TABLE_READ_THROUGHPUT}
+        WriteCapacityUnits: ${env:MEETINGS_TABLE_WRITE_THROUGHPUT}
 
 # Print out the table arn and table stream arn
 Outputs:
