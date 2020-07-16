@@ -21,3 +21,6 @@ jspm_packages
 
 # Environment variables
 .env
+
+# Middleware
+.middleware/

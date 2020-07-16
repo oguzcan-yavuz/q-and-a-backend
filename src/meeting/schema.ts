@@ -1,14 +1,15 @@
 import * as Joi from '@hapi/joi';
+import { validator } from '../middleware/validator';
 
-const getMeeting = Joi.object()
+const getMeetingSchema = Joi.object()
   .keys({
     pathParameters: Joi.object().keys({
-      id: Joi.string(),
+      id: Joi.string().guid({ version: 'uuidv4' }).required(),
     }),
   })
   .unknown();
 
-const createMeeting = Joi.object()
+const createMeetingSchema = Joi.object()
   .keys({
     body: Joi.object().keys({
       title: Joi.string().required(),
@@ -25,7 +26,5 @@ const createMeeting = Joi.object()
   })
   .unknown();
 
-export default {
-  getMeeting,
-  createMeeting,
-};
+export const createMeetingValidator = validator(createMeetingSchema);
+export const getMeetingValidator = validator(getMeetingSchema);

@@ -16,9 +16,13 @@ custom:
     packager: 'npm'
   serverless-offline:
     useChildProcesses: true
+  middleware:
+    pos:
+      - catch: src/middleware/error-handler.errorHandler
 
 plugins:
   - serverless-dotenv-plugin
+  - serverless-middleware
   - serverless-webpack
   - serverless-dynamodb-local
   - serverless-offline
@@ -38,14 +42,18 @@ provider:
 
 functions:
   getMeeting:
-    handler: src/meeting/controller.getMeeting
+    handler:
+      - src/meeting/schema.getMeetingValidator
+      - src/meeting/controller.getMeeting
     events:
       - http:
           method: get
           path: meetings/{id}
           cors: true
   createMeeting:
-    handler: src/meeting/controller.createMeeting
+    handler: 
+      - src/meeting/schema.createMeetingValidator
+      - src/meeting/controller.createMeeting
     events:
       - http:
           method: post
