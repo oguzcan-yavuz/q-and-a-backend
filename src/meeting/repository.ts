@@ -3,7 +3,7 @@ import docClient from '../util/document-client';
 import { v4 as uuidv4 } from 'uuid';
 const TableName = process.env.MEETINGS_TABLE as string;
 
-export const getMeeting = async (id: string): Promise<Meeting> => {
+export const getMeeting = async (id: string): Promise<Meeting | undefined> => {
   const params = {
     TableName,
     Key: { id },
