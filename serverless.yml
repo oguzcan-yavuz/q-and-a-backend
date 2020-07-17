@@ -17,6 +17,8 @@ custom:
   serverless-offline:
     useChildProcesses: true
   middleware:
+    pre:
+      - src/middleware/source-map.noop
     pos:
       - catch: src/middleware/error-handler.errorHandler
 
