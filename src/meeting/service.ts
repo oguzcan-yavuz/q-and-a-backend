@@ -1,11 +1,11 @@
 import * as MeetingRepository from './repository';
-import { Meeting, MeetingBody, MeetingStatuses } from './Meeting';
+import { Meeting, MeetingBody, MeetingStatus } from './Meeting';
 import { NotFoundException } from '../error/not-found-exception';
 
 export const getMeeting = async (id: string): Promise<Meeting> => {
   const meeting = await MeetingRepository.getMeeting(id);
 
-  if (!meeting || meeting.status === MeetingStatuses.Deleted) {
+  if (!meeting || meeting.status === MeetingStatus.Deleted) {
     throw new NotFoundException();
   }
 

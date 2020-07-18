@@ -6,7 +6,7 @@ type Options = {
   plannedAnswerDate?: Date;
 };
 
-export const enum MeetingStatuses {
+export const enum MeetingStatus {
   Open = 'open',
   Deleted = 'deleted',
   Closed = 'closed',
@@ -18,7 +18,7 @@ export type Meeting = {
   description?: string;
   image?: string;
   options?: Options;
-  status: MeetingStatuses;
+  status: MeetingStatus;
 };
 
 export type MeetingBody = Omit<Meeting, 'id' | 'status'>;

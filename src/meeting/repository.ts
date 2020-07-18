@@ -1,4 +1,4 @@
-import { Meeting, MeetingBody, MeetingStatuses } from './Meeting';
+import { Meeting, MeetingBody, MeetingStatus } from './Meeting';
 import docClient from '../util/document-client';
 import { v4 as uuidv4 } from 'uuid';
 import { NotFoundException } from '../error/not-found-exception';
@@ -19,7 +19,7 @@ export const createMeeting = async (meeting: MeetingBody): Promise<Pick<Meeting,
   const id = uuidv4();
   const meetingDocument = {
     id,
-    status: MeetingStatuses.Open,
+    status: MeetingStatus.Open,
     ...meeting,
   } as Meeting;
   const params = {
@@ -43,7 +43,7 @@ export const deleteMeeting = async (id: string): Promise<void> => {
         '#status': 'status',
       },
       ExpressionAttributeValues: {
-        ':status': MeetingStatuses.Deleted,
+        ':status': MeetingStatus.Deleted,
       },
     };
 
@@ -71,7 +71,7 @@ export const updateMeeting = async (id: string, meeting: Partial<MeetingBody>): 
       },
       ExpressionAttributeValues: {
         ...ExpressionAttributeValues,
-        ':status': MeetingStatuses.Deleted,
+        ':status': MeetingStatus.Deleted,
       },
     };
 
