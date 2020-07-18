@@ -61,4 +61,21 @@ functions:
           method: post
           path: meetings/
           cors: true
-  
+  deleteMeeting:
+    handler:
+      - src/meeting/schema.deleteMeetingValidator
+      - src/meeting/controller.deleteMeeting
+    events:
+      - http:
+          method: delete
+          path: meetings/{id}
+          cors: true
+  updateMeeting:
+    handler:
+      - src/meeting/schema.updateMeetingValidator
+      - src/meeting/controller.updateMeeting
+    events:
+      - http:
+          method: patch
+          path: meetings/{id}
+          cors: true

@@ -4,6 +4,7 @@
     "strictNullChecks": true,
     "sourceMap": true,
     "allowJs": true,
+    "esModuleInterop": true,
     "target": "es6",
     "outDir": ".build",
     "moduleResolution": "node",

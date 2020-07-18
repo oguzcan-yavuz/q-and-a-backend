@@ -26,5 +26,35 @@ const createMeetingSchema = Joi.object()
   })
   .unknown();
 
+const deleteMeetingSchema = Joi.object()
+  .keys({
+    pathParameters: Joi.object().keys({
+      id: Joi.string().guid({ version: 'uuidv4' }).required(),
+    }),
+  })
+  .unknown();
+
+const updateMeetingSchema = Joi.object()
+  .keys({
+    pathParameters: Joi.object().keys({
+      id: Joi.string().guid({ version: 'uuidv4' }).required(),
+    }),
+    body: Joi.object().keys({
+      title: Joi.string(),
+      description: Joi.string(),
+      image: Joi.string(),
+      options: Joi.object().keys({
+        winnerCount: Joi.number().positive(),
+        maxVoteCountPerUser: Joi.number().positive(),
+        maxQuestionCountPerUser: Joi.number().positive(),
+        electionEndDate: Joi.date().greater('now'),
+        plannedAnswerDate: Joi.date().greater('now'),
+      }),
+    }),
+  })
+  .unknown();
+
 export const createMeetingValidator = validator(createMeetingSchema);
 export const getMeetingValidator = validator(getMeetingSchema);
+export const deleteMeetingValidator = validator(deleteMeetingSchema);
+export const updateMeetingValidator = validator(updateMeetingSchema);
