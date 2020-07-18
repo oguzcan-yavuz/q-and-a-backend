@@ -1,0 +1,41 @@
+Resources:
+  QuestionsTable:
+    Type: 'AWS::DynamoDB::Table'
+    DeletionPolicy: Retain
+    Properties:
+      TableName: ${self:provider.environment.QUESTIONS_TABLE}
+      AttributeDefinitions:
+        -
+          AttributeName: id
+          AttributeType: S
+        -
+          AttributeName: meetingId
+          AttributeType: S
+      KeySchema:
+        -
+          AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        -
+          IndexName: meetingId-id-index
+          KeySchema:
+            -
+              AttributeName: meetingId
+              KeyType: HASH
+            -
+              AttributeName: id
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: ${env:QUESTIONS_TABLE_READ_THROUGHPUT}
+            WriteCapacityUnits: ${env:QUESTIONS_TABLE_WRITE_THROUGHPUT}
+      ProvisionedThroughput:
+        ReadCapacityUnits: ${env:QUESTIONS_TABLE_READ_THROUGHPUT}
+        WriteCapacityUnits: ${env:QUESTIONS_TABLE_WRITE_THROUGHPUT}
+
+# Print out the table arn and table stream arn
+Outputs:
+  QuestionsTableArn:
+    Value:
+      "Fn::GetAtt": [ QuestionsTable, Arn ]

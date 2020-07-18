@@ -31,6 +31,7 @@ plugins:
 
 resources:
   - ${file(./resources/dynamodb-meetings-table.yml)}
+  - ${file(./resources/dynamodb-questions-table.yml)}
 
 provider:
   name: aws
@@ -43,6 +44,7 @@ provider:
     restApi: true
 
 functions:
+  # Meeting endpoints
   getMeeting:
     handler:
       - src/meeting/schema.getMeetingValidator
@@ -53,13 +55,13 @@ functions:
           path: meetings/{id}
           cors: true
   createMeeting:
-    handler: 
+    handler:
       - src/meeting/schema.createMeetingValidator
       - src/meeting/controller.createMeeting
     events:
       - http:
           method: post
-          path: meetings/
+          path: meetings
           cors: true
   deleteMeeting:
     handler:
@@ -78,4 +80,23 @@ functions:
       - http:
           method: patch
           path: meetings/{id}
+          cors: true
+  getQuestionsOfMeeting:
+    handler:
+      - src/meeting/schema.getQuestionsOfMeetingValidator
+      - src/meeting/controller.getQuestionsOfMeeting
+    events:
+      - http:
+          method: get
+          path: meetings/{id}/questions
+          cors: true
+  # Question endpoints
+  createQuestion:
+    handler:
+      - src/question/schema.createQuestionValidator
+      - src/question/controller.createQuestion
+    events:
+      - http:
+          method: post
+          path: questions
           cors: true

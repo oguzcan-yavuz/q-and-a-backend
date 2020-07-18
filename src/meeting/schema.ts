@@ -54,7 +54,16 @@ const updateMeetingSchema = Joi.object()
   })
   .unknown();
 
+const getQuestionsOfMeetingSchema = Joi.object()
+  .keys({
+    pathParameters: Joi.object().keys({
+      id: Joi.string().guid({ version: 'uuidv4' }).required(),
+    }),
+  })
+  .unknown();
+
 export const createMeetingValidator = validator(createMeetingSchema);
 export const getMeetingValidator = validator(getMeetingSchema);
 export const deleteMeetingValidator = validator(deleteMeetingSchema);
 export const updateMeetingValidator = validator(updateMeetingSchema);
+export const getQuestionsOfMeetingValidator = validator(getQuestionsOfMeetingSchema);
