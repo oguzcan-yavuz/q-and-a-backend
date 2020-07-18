@@ -7,7 +7,7 @@ export const createQuestion = (questionBody: QuestionBody): Promise<Question> =>
 };
 
 export const getQuestionsOfMeeting = (
-  meetingId: Pick<Meeting, 'id'>
+  meetingId: Meeting['id']
 ): Promise<GetQuestionsOfMeetingResponse> => {
   return QuestionRepository.getQuestionsOfMeeting(meetingId);
 };

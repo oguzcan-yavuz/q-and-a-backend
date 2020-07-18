@@ -5,7 +5,7 @@ import { NotFoundException } from '../error/not-found-exception';
 import { generateSetExpressions } from '../util';
 const TableName = process.env.MEETINGS_TABLE as string;
 
-export const getMeeting = async (id: Pick<Meeting, 'id'>): Promise<Meeting | undefined> => {
+export const getMeeting = async (id: Meeting['id']): Promise<Meeting | undefined> => {
   const params = {
     TableName,
     Key: { id },
@@ -32,7 +32,7 @@ export const createMeeting = async (meeting: MeetingBody): Promise<Pick<Meeting,
   return { id };
 };
 
-export const deleteMeeting = async (id: Pick<Meeting, 'id'>): Promise<void> => {
+export const deleteMeeting = async (id: Meeting['id']): Promise<void> => {
   try {
     const params = {
       TableName,
@@ -54,7 +54,7 @@ export const deleteMeeting = async (id: Pick<Meeting, 'id'>): Promise<void> => {
 };
 
 export const updateMeeting = async (
-  id: Pick<Meeting, 'id'>,
+  id: Meeting['id'],
   meeting: Partial<MeetingBody>
 ): Promise<void> => {
   try {

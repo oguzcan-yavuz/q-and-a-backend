@@ -4,6 +4,6 @@
   "rules": {
     "prettier": true,
     "no-console": false,
-    "eofline": true,
+    "eofline": true
   }
 }

@@ -5,7 +5,7 @@ import { Meeting, MeetingBody } from './Meeting';
 import { createProxyResult } from '../util';
 
 export const getMeeting: APIGatewayProxyHandler = async (event) => {
-  const id = event.pathParameters!.id as Pick<Meeting, 'id'>;
+  const id = event.pathParameters!.id as Meeting['id'];
   const meeting = await MeetingService.getMeeting(id);
 
   return createProxyResult(HttpStatus.OK, meeting);
@@ -19,14 +19,14 @@ export const createMeeting: APIGatewayProxyHandler = async (event) => {
 };
 
 export const deleteMeeting: APIGatewayProxyHandler = async (event) => {
-  const id = event.pathParameters!.id as Pick<Meeting, 'id'>;
+  const id = event.pathParameters!.id as Meeting['id'];
   await MeetingService.deleteMeeting(id);
 
   return createProxyResult(HttpStatus.NO_CONTENT, {});
 };
 
 export const updateMeeting: APIGatewayProxyHandler = async (event) => {
-  const id = event.pathParameters!.id as Pick<Meeting, 'id'>;
+  const id = event.pathParameters!.id as Meeting['id'];
   const meeting = JSON.parse(event.body!) as Partial<MeetingBody>;
   await MeetingService.updateMeeting(id, meeting);
 
@@ -34,7 +34,7 @@ export const updateMeeting: APIGatewayProxyHandler = async (event) => {
 };
 
 export const getQuestionsOfMeeting: APIGatewayProxyHandler = async (event) => {
-  const id = event.pathParameters!.id as Pick<Meeting, 'id'>;
+  const id = event.pathParameters!.id as Meeting['id'];
   const questions = await MeetingService.getQuestionsOfMeeting(id);
 
   return createProxyResult(HttpStatus.OK, questions);

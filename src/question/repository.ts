@@ -2,7 +2,6 @@ import { v4 as uuidv4 } from 'uuid';
 import docClient from '../util/document-client';
 import { Meeting } from '../meeting/Meeting';
 import { GetQuestionsOfMeetingResponse, Question, QuestionBody } from './Question';
-import { IM_A_TEAPOT } from 'http-status-codes';
 
 const TableName = process.env.QUESTIONS_TABLE as string;
 
@@ -25,7 +24,7 @@ export const createQuestion = async (question: QuestionBody): Promise<Question> 
 };
 
 export const getQuestionsOfMeeting = async (
-  meetingId: Pick<Meeting, 'id'>
+  meetingId: Meeting['id']
 ): Promise<GetQuestionsOfMeetingResponse> => {
   const params = {
     TableName,
@@ -39,5 +38,5 @@ export const getQuestionsOfMeeting = async (
 
   const { Items: questions = [] } = await docClient.query(params).promise();
 
-  return questions;
+  return questions as GetQuestionsOfMeetingResponse;
 };

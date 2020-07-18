@@ -4,7 +4,7 @@ import { GetQuestionsOfMeetingResponse } from '../question/Question';
 import { Meeting, MeetingBody, MeetingStatus } from './Meeting';
 import * as MeetingRepository from './repository';
 
-export const getMeeting = async (id: Pick<Meeting, 'id'>): Promise<Meeting> => {
+export const getMeeting = async (id: Meeting['id']): Promise<Meeting> => {
   const meeting = await MeetingRepository.getMeeting(id);
 
   if (!meeting || meeting.status === MeetingStatus.Deleted) {
@@ -18,19 +18,19 @@ export const createMeeting = (meeting: MeetingBody): Promise<Pick<Meeting, 'id'>
   return MeetingRepository.createMeeting(meeting);
 };
 
-export const deleteMeeting = async (id: Pick<Meeting, 'id'>): Promise<void> => {
+export const deleteMeeting = async (id: Meeting['id']): Promise<void> => {
   return MeetingRepository.deleteMeeting(id);
 };
 
 export const updateMeeting = async (
-  id: Pick<Meeting, 'id'>,
+  id: Meeting['id'],
   meeting: Partial<MeetingBody>
 ): Promise<void> => {
   return MeetingRepository.updateMeeting(id, meeting);
 };
 
 export const getQuestionsOfMeeting = async (
-  id: Pick<Meeting, 'id'>
+  id: Meeting['id']
 ): Promise<GetQuestionsOfMeetingResponse> => {
   return QuestionService.getQuestionsOfMeeting(id);
 };
