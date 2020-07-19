@@ -2,8 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import docClient from '../util/document-client';
 import { Meeting } from '../meeting/Meeting';
 import { GetQuestionsOfMeetingResponse, Question, QuestionBody } from './Question';
-
-const TableName = process.env.QUESTIONS_TABLE as string;
+const TableName = `${process.env.QUESTIONS_TABLE}-${process.env.NODE_ENV}`;
 
 export const createQuestion = async (question: QuestionBody): Promise<Question> => {
   const id = uuidv4();

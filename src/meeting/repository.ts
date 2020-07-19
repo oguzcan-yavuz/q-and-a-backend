@@ -3,7 +3,7 @@ import docClient from '../util/document-client';
 import { v4 as uuidv4 } from 'uuid';
 import { NotFoundException } from '../error/not-found-exception';
 import { generateSetExpressions } from '../util';
-const TableName = process.env.MEETINGS_TABLE as string;
+const TableName = `${process.env.MEETINGS_TABLE}-${process.env.NODE_ENV}`;
 
 export const getMeeting = async (id: Meeting['id']): Promise<Meeting | undefined> => {
   const params = {

@@ -5,7 +5,7 @@ custom:
   dynamodb-offline-port: 8000
   dynamodb:
     stages:
-      - dev
+      - development
     start:
       port: ${self:custom.dynamodb-offline-port}
       dbPath: db/
@@ -15,6 +15,7 @@ custom:
     includeModules: true
     packager: 'npm'
   serverless-offline:
+    httpPort: 8080
     useChildProcesses: true
   middleware:
     pre:
@@ -36,6 +37,8 @@ resources:
 provider:
   name: aws
   runtime: nodejs12.x
+  stage: ${opt:stage, 'development'}
+  region: ${opt:region, 'us-east-1'}
   apiGateway:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
   environment:

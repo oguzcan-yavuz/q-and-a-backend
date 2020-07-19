@@ -3,7 +3,7 @@ Resources:
     Type: 'AWS::DynamoDB::Table'
     DeletionPolicy: Retain
     Properties:
-      TableName: ${self:provider.environment.QUESTIONS_TABLE}
+      TableName: ${self:provider.environment.QUESTIONS_TABLE}-${self:provider.stage}
       AttributeDefinitions:
         -
           AttributeName: id
