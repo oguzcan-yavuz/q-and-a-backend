@@ -33,18 +33,21 @@ plugins:
 resources:
   - ${file(./resources/dynamodb-meetings-table.yml)}
   - ${file(./resources/dynamodb-questions-table.yml)}
+  - ${file(./resources/cognito-user-pool.yml)}
+  - ${file(./resources/cognito-user-pool-domain.yml)}
+  - ${file(./resources/cognito-user-pool-google-identity-provider.yml)}
+  - ${file(./resources/cognito-user-pool-web-client.yml)}
 
 provider:
   name: aws
   runtime: nodejs12.x
   stage: ${opt:stage, 'development'}
   region: ${opt:region, 'us-east-1'}
+  profile: ${opt:profile, 'q-and-a-admin'}
   apiGateway:
-    minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
+    minimumCompressionSize: 1024
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
-  logs:
-    restApi: true
 
 functions:
   # Meeting endpoints

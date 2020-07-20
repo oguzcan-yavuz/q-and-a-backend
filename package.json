@@ -10,7 +10,8 @@
     "commit": "npx git-cz",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --format verbose",
     "lint:fix": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --fix --format verbose",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "deploy:dev": "serverless deploy --stage development --region us-east-1 --verbose --conceal"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",

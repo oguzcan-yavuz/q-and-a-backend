@@ -1,0 +1,48 @@
+Resources:
+  CognitoUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      AccountRecoverySetting:
+        RecoveryMechanisms:
+          - Name: verified_email
+            Priority: 1
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: false
+      AliasAttributes:
+        - email
+      AutoVerifiedAttributes:
+        - email
+      MfaConfiguration: OFF
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: false
+          RequireNumbers: false
+          RequireSymbols: false
+          RequireUppercase: false
+          TemporaryPasswordValidityDays: 7
+      Schema:
+        - AttributeDataType: String
+          DeveloperOnlyAttribute: false
+          Mutable: true
+          Name: email
+          Required: true
+        - AttributeDataType: String
+          DeveloperOnlyAttribute: false
+          Mutable: true
+          Name: name
+          Required: true
+        - AttributeDataType: String
+          DeveloperOnlyAttribute: false
+          Mutable: true
+          Name: picture
+          Required: false
+      UsernameConfiguration:
+        CaseSensitive: false
+      UserPoolAddOns:
+        AdvancedSecurityMode: OFF
+      UserPoolName: q-and-a-${self:provider.stage}
+Outputs:
+  UserPoolId:
+    Value:
+      Ref: CognitoUserPool

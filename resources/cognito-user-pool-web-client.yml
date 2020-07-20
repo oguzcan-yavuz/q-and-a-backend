@@ -1,0 +1,41 @@
+Resources:
+  CognitoUserPoolWebClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      AllowedOAuthFlows:
+        - code
+        - implicit
+      AllowedOAuthFlowsUserPoolClient: true
+      AllowedOAuthScopes:
+        - email
+        - openid
+        - profile
+      CallbackURLs:
+        - http://localhost
+      ClientName: web-client
+      DefaultRedirectURI: http://localhost
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_USER_SRP_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+      GenerateSecret: false
+      LogoutURLs:
+        - http://localhost
+      PreventUserExistenceErrors: ENABLED
+      ReadAttributes:
+        - email
+        - name
+        - picture
+      RefreshTokenValidity: 30
+      SupportedIdentityProviders:
+        - Google
+      UserPoolId:
+        Ref: CognitoUserPool
+      WriteAttributes:
+        - email
+        - name
+        - picture
+Outputs:
+  UserPoolWebClient:
+    Value:
+      Ref: CognitoUserPoolWebClient
