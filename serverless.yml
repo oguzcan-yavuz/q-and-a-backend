@@ -37,6 +37,7 @@ resources:
   - ${file(./resources/cognito-user-pool-domain.yml)}
   - ${file(./resources/cognito-user-pool-google-identity-provider.yml)}
   - ${file(./resources/cognito-user-pool-web-client.yml)}
+  - ${file(./resources/api-gateway-cognito-authorizer.yml)}
 
 provider:
   name: aws
@@ -78,6 +79,10 @@ functions:
           method: delete
           path: meetings/{id}
           cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: APIGatewayCognitoAuthorizer
   updateMeeting:
     handler:
       - src/meeting/schema.updateMeetingValidator
