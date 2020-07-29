@@ -1,0 +1,18 @@
+Resources:
+  APIGatewayCognitoAuthorizer:
+    Type: AWS::ApiGateway::Authorizer
+    Properties:
+      Name: CognitoAuthorizer
+      Type: COGNITO_USER_POOLS
+      IdentitySource: method.request.header.Authorization
+      RestApiId:
+        Ref: ApiGatewayRestApi
+      ProviderARNs:
+        - Fn::GetAtt:
+            - CognitoUserPool
+            - Arn
+    DependsOn: CognitoUserPool
+Outputs:
+  CognitoAuthorizer:
+    Value:
+      Ref: APIGatewayCognitoAuthorizer

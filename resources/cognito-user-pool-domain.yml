@@ -3,8 +3,8 @@ Resources:
     Type: AWS::Cognito::UserPoolDomain
     Properties:
       Domain: q-and-a
-      UserPoolId:
-        Ref: CognitoUserPool
+      UserPoolId: !Ref CognitoUserPool
+    DependsOn: CognitoUserPool
 Outputs:
   UserPoolDomain:
     Value:
