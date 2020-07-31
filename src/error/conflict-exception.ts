@@ -1,5 +1,5 @@
-import { HttpException } from "./http-exception";
-import * as HttpStatus from "http-status-codes";
+import { HttpException } from './http-exception';
+import * as HttpStatus from 'http-status-codes';
 
 export class ConflictException extends HttpException {
   constructor() {

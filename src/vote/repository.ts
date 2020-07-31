@@ -1,7 +1,7 @@
-import { v4 as uuidv4 } from "uuid";
-import { generateSetExpressions } from "../util";
-import docClient from "../util/document-client";
-import { Vote } from "./Vote";
+import { v4 as uuidv4 } from 'uuid';
+import { generateSetExpressions } from '../util';
+import docClient from '../util/document-client';
+import { Vote } from './Vote';
 
 const TableName = process.env.VOTES_TABLE as string;
 
@@ -30,14 +30,14 @@ export const voteQuestion = async ({
 export const getUserVotes = async ({
   meetingId,
   userId,
-}: Pick<Vote, "meetingId" | "userId">): Promise<Vote> => {
+}: Pick<Vote, 'meetingId' | 'userId'>): Promise<Vote> => {
   const params = {
     TableName,
-    IndexName: "meetingId-userId-index",
-    KeyConditionExpression: "meetingId = :meetingId AND userId = :userId",
+    IndexName: 'meetingId-userId-index',
+    KeyConditionExpression: 'meetingId = :meetingId AND userId = :userId',
     ExpressionAttributeValues: {
-      ":meetingId": meetingId,
-      ":userId": userId,
+      ':meetingId': meetingId,
+      ':userId': userId,
     },
   };
 

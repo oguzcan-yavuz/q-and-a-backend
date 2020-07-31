@@ -1,10 +1,7 @@
-import { APIGatewayProxyResult } from "aws-lambda";
-import { DynamoDB } from "aws-sdk";
+import { APIGatewayProxyResult } from 'aws-lambda';
+import { DynamoDB } from 'aws-sdk';
 
-export const createProxyResult = (
-  statusCode: number,
-  body: object
-): APIGatewayProxyResult => ({
+export const createProxyResult = (statusCode: number, body: object): APIGatewayProxyResult => ({
   statusCode,
   body: JSON.stringify(body),
 });
@@ -31,14 +28,11 @@ export const generateSetExpressions = (body: object): UpdateExpressions => {
       ExpressionAttributeValues: {},
     }
   );
-  const updateExpression = `SET ${expressions.UpdateExpression.join(", ")}`;
+  const updateExpression = `SET ${expressions.UpdateExpression.join(', ')}`;
 
   return { ...expressions, UpdateExpression: updateExpression };
 };
 
-export const calculateVoteValue = (
-  oldValue: number = 0,
-  newValue: number
-): number => {
+export const calculateVoteValue = (oldValue: number = 0, newValue: number): number => {
   return -oldValue + newValue;
 };
