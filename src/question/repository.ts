@@ -1,10 +1,28 @@
-import { v4 as uuidv4 } from 'uuid';
-import docClient from '../util/document-client';
-import { Meeting } from '../meeting/Meeting';
-import { GetQuestionsOfMeetingResponse, Question, QuestionBody } from './Question';
+import { v4 as uuidv4 } from "uuid";
+import docClient from "../util/document-client";
+import { Meeting } from "../meeting/Meeting";
+import {
+  GetQuestionsOfMeetingResponse,
+  Question,
+  QuestionBody,
+} from "./Question";
 const TableName = `${process.env.QUESTIONS_TABLE}-${process.env.NODE_ENV}`;
 
-export const createQuestion = async (question: QuestionBody): Promise<Question> => {
+export const getQuestion = async (
+  id: Question["id"]
+): Promise<Question | undefined> => {
+  const params = {
+    TableName,
+    Key: { id },
+  };
+  const { Item: question } = await docClient.get(params).promise();
+
+  return question as Question;
+};
+
+export const createQuestion = async (
+  question: QuestionBody
+): Promise<Question> => {
   const id = uuidv4();
   const questionDocument = {
     id,
@@ -23,16 +41,16 @@ export const createQuestion = async (question: QuestionBody): Promise<Question> 
 };
 
 export const getQuestionsOfMeeting = async (
-  meetingId: Meeting['id']
+  meetingId: Meeting["id"]
 ): Promise<GetQuestionsOfMeetingResponse> => {
   const params = {
     TableName,
-    IndexName: 'meetingId-id-index',
-    KeyConditionExpression: 'meetingId = :meetingId',
+    IndexName: "meetingId-id-index",
+    KeyConditionExpression: "meetingId = :meetingId",
     ExpressionAttributeValues: {
-      ':meetingId': meetingId,
+      ":meetingId": meetingId,
     },
-    ProjectionExpression: 'id, content, voteCount, createdAt',
+    ProjectionExpression: "id, content, voteCount, createdAt",
   };
 
   const { Items: questions = [] } = await docClient.query(params).promise();
