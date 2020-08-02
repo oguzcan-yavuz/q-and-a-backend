@@ -1,10 +1,10 @@
-import { DynamoDBStreamHandler } from 'aws-lambda';
 import { NotFoundException } from '../error/not-found-exception';
 import { Meeting } from '../meeting/Meeting';
-import { calculateVoteValue } from '../util';
+import { calculateVoteAddition } from '../util';
 
 import { GetQuestionsOfMeetingResponse, Question, QuestionBody } from './Question';
 import * as QuestionRepository from './repository';
+import { VoteType } from '../vote/Vote';
 
 export const getQuestion = async (id: Question['id']): Promise<Question> => {
   const question = await QuestionRepository.getQuestion(id);
@@ -26,10 +26,17 @@ export const getQuestionsOfMeeting = (
   return QuestionRepository.getQuestionsOfMeeting(meetingId);
 };
 
-export const updateQuestionVote: DynamoDBStreamHandler = (event) => {
-  event.Records.map((record) => {
-    const OldVoteType: number = record.dynamodb!.OldImage?.type!.N!;
-    const NewVoteType: number = record.dynamodb!.NewImage?.type!.N!;
-    const calculatedVoteValue: number = calculateVoteValue(OldVoteType, NewVoteType);
-  });
+type VoteTypeChange = {
+  questionId: Question['id'];
+  oldVoteType: VoteType;
+  newVoteType: VoteType;
 };
+
+export const updateVoteCountsOfQuestions = (voteTypeChanges: VoteTypeChange[]): Promise<void[]> =>
+  Promise.all(
+    voteTypeChanges.map(({ questionId, oldVoteType, newVoteType }) => {
+      const addition = calculateVoteAddition(oldVoteType, newVoteType);
+
+      return QuestionRepository.updateVoteCount(questionId, addition);
+    })
+  );

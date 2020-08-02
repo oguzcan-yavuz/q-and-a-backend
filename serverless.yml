@@ -118,14 +118,14 @@ functions:
           method: post
           path: questions
           cors: true
-  updateQuestionVote:
-    handler: src/question/controller.updateQuestionVote
+  updateVoteCountsOfQuestions:
+    handler: src/question/controller.updateVoteCountsOfQuestions
     events:
       - stream:
           enabled: true
           type: dynamodb
           arn:
-            "Fn::GetAtt": [VotesTable, LatestStreamArn]
+            'Fn::GetAtt': [VotesTable, LatestStreamArn]
           batchSize: 10
           startingPosition: LATEST
   # Vote endpoints
@@ -138,12 +138,12 @@ functions:
           method: put
           path: questions/{questionId}/vote
           cors: true
-  getVoteQuestion:
+  getVotesOfCurrentUser:
     handler:
-      - src/vote/schema.getUserVotesValidator
-      - src/vote/controller.getUserVotes
+      - src/vote/schema.getVotesOfCurrentUserValidator
+      - src/vote/controller.getVotesOfCurrentUser
     events:
       - http:
           method: get
-          path: meetings/{meetingId}/votes/{userId}
+          path: meetings/{meetingId}/users/me/votes
           cors: true

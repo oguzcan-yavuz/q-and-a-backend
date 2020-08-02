@@ -10,12 +10,13 @@ export const voteQuestion = async ({
 }: Omit<Vote, 'meetingId'>): Promise<Vote> => {
   const { meetingId } = await QuestionService.getQuestion(questionId);
   await MeetingService.getOpenMeeting(meetingId);
+
   return VoteRepository.voteQuestion({ meetingId, questionId, userId, type });
 };
 
-export const getUserVotes = async ({
+export const getVotesOfCurrentUser = async ({
   meetingId,
   userId,
-}: Pick<Vote, 'meetingId' | 'userId'>): Promise<Vote> => {
-  return VoteRepository.getUserVotes({ meetingId, userId });
+}: Pick<Vote, 'meetingId' | 'userId'>): Promise<Vote[]> => {
+  return VoteRepository.getVotesOfCurrentUser({ meetingId, userId });
 };

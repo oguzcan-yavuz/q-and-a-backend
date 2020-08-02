@@ -1,6 +1,6 @@
 import { Meeting } from '../meeting/Meeting';
 
-const enum QuestionStatus {
+export const enum QuestionStatus {
   Deleted = 'deleted',
 }
 

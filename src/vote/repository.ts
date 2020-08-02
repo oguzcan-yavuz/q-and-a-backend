@@ -1,5 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
-import { generateSetExpressions } from '../util';
 import docClient from '../util/document-client';
 import { Vote } from './Vote';
 
@@ -27,10 +25,10 @@ export const voteQuestion = async ({
   return voteDocument;
 };
 
-export const getUserVotes = async ({
+export const getVotesOfCurrentUser = async ({
   meetingId,
   userId,
-}: Pick<Vote, 'meetingId' | 'userId'>): Promise<Vote> => {
+}: Pick<Vote, 'meetingId' | 'userId'>): Promise<Vote[]> => {
   const params = {
     TableName,
     IndexName: 'meetingId-userId-index',
@@ -43,5 +41,5 @@ export const getUserVotes = async ({
 
   const { Items: votes = [] } = await docClient.query(params).promise();
 
-  return votes;
+  return votes as Vote[];
 };

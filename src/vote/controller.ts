@@ -16,10 +16,10 @@ export const voteQuestion: APIGatewayProxyHandler = async (event) => {
   return createProxyResult(HttpStatus.OK, voteResponse);
 };
 
-export const getUserVotes: APIGatewayProxyHandler = async (event) => {
+export const getVotesOfCurrentUser: APIGatewayProxyHandler = async (event) => {
   const meetingId = event.pathParameters!.meetingId as Vote['meetingId'];
-  const userId = event.pathParameters!.userId as Vote['userId'];
+  const userId = '' as Vote['userId']; // TODO: get userId from jwt claim
+  const userVotes = await VoteService.getVotesOfCurrentUser({ meetingId, userId });
 
-  const userVotes = await VoteService.getUserVotes({ meetingId, userId });
   return createProxyResult(HttpStatus.OK, userVotes);
 };
