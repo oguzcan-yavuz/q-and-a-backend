@@ -1,0 +1,50 @@
+Resources:
+  VotesTable:
+    Type: 'AWS::DynamoDB::Table'
+    DeletionPolicy: Retain
+    Properties:
+      TableName: ${self:provider.environment.VOTES_TABLE}
+      AttributeDefinitions:
+        -
+          AttributeName: questionId
+          AttributeType: S
+        -
+          AttributeName: meetingId
+          AttributeType: S
+        -
+          AttributeName: userId
+          AttributeType: S
+      KeySchema:
+         -
+          AttributeName: questionId
+          KeyType: HASH
+         -
+          AttributeName: userId
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
+        -
+          IndexName: meetingId-userId-index
+          KeySchema:
+            -
+              AttributeName: meetingId
+              KeyType: HASH
+            -
+              AttributeName: userId
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: ${env:VOTES_TABLE_READ_THROUGHPUT}
+            WriteCapacityUnits: ${env:VOTES_TABLE_WRITE_THROUGHPUT}
+      ProvisionedThroughput:
+        ReadCapacityUnits: ${env:VOTES_TABLE_READ_THROUGHPUT}
+        WriteCapacityUnits: ${env:VOTES_TABLE_WRITE_THROUGHPUT}
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+Outputs:
+  VotesTableArn:
+    Value:
+      "Fn::GetAtt": [ VotesTable, Arn ]
+  VotesTableStreamArn:
+    Value:
+      "Fn::GetAtt": [ VotesTable, StreamArn ]

@@ -33,8 +33,6 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: ${env:MEETINGS_TABLE_READ_THROUGHPUT}
         WriteCapacityUnits: ${env:MEETINGS_TABLE_WRITE_THROUGHPUT}
-
-# Print out the table arn and table stream arn
 Outputs:
   MeetingsTableArn:
     Value:

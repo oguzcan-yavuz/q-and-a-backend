@@ -13,6 +13,7 @@ type UpdateExpressions = {
 };
 
 export const generateSetExpressions = (body: object): UpdateExpressions => {
+  // TODO: doesn't work for partial nested updates, it replaces the object completely
   const expressions = Object.entries(body).reduce(
     (acc, [key, value]) => {
       acc.UpdateExpression.push(`#${key} = :${key}`);
@@ -30,4 +31,8 @@ export const generateSetExpressions = (body: object): UpdateExpressions => {
   const updateExpression = `SET ${expressions.UpdateExpression.join(', ')}`;
 
   return { ...expressions, UpdateExpression: updateExpression };
+};
+
+export const calculateVoteAddition = (oldValue: number = 0, newValue: number = 0): number => {
+  return -oldValue + newValue;
 };

@@ -10,7 +10,7 @@
     "commit": "npx git-cz",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --format verbose",
     "lint:fix": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --fix --format verbose",
-    "prettier": "prettier --write .",
+    "prettier": "prettier --write src/**",
     "deploy:dev": "serverless deploy --stage development --region us-east-1 --verbose --conceal"
   },
   "dependencies": {
@@ -39,7 +39,8 @@
     "tslint-plugin-prettier": "^2.3.0",
     "typescript": "^3.9.6",
     "webpack": "^4.43.0",
-    "webpack-node-externals": "^2.5.0"
+    "webpack-node-externals": "^2.5.0",
+    "serverless-offline-dynamodb-streams": "^4.0.1"
   },
   "author": "The serverless webpack authors (https://github.com/elastic-coders/serverless-webpack)",
   "license": "MIT",

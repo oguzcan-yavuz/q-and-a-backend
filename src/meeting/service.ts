@@ -1,4 +1,5 @@
 import { NotFoundException } from '../error/not-found-exception';
+import { ConflictException } from '../error/conflict-exception';
 import * as QuestionService from '../question/service';
 import { GetQuestionsOfMeetingResponse } from '../question/Question';
 import { Meeting, MeetingBody, MeetingStatus } from './Meeting';
@@ -33,4 +34,18 @@ export const getQuestionsOfMeeting = async (
   id: Meeting['id']
 ): Promise<GetQuestionsOfMeetingResponse> => {
   return QuestionService.getQuestionsOfMeeting(id);
+};
+
+export const getOpenMeeting = async (id: Meeting['id']): Promise<Meeting> => {
+  const meeting = await MeetingRepository.getMeeting(id);
+
+  if (!meeting || meeting.status === MeetingStatus.Deleted) {
+    throw new NotFoundException();
+  }
+
+  if (meeting.status !== MeetingStatus.Open) {
+    throw new ConflictException();
+  }
+
+  return meeting;
 };

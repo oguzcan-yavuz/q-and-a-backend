@@ -33,8 +33,6 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: ${env:QUESTIONS_TABLE_READ_THROUGHPUT}
         WriteCapacityUnits: ${env:QUESTIONS_TABLE_WRITE_THROUGHPUT}
-
-# Print out the table arn and table stream arn
 Outputs:
   QuestionsTableArn:
     Value:
