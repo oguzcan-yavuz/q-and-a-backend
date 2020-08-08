@@ -19,8 +19,8 @@ const createMeetingSchema = Joi.object()
         winnerCount: Joi.number().positive(),
         maxVoteCountPerUser: Joi.number().positive(),
         maxQuestionCountPerUser: Joi.number().positive(),
-        electionEndDate: Joi.date().greater('now'),
-        plannedAnswerDate: Joi.date().greater('now'),
+        electionEndDate: Joi.date().iso().greater('now'),
+        plannedAnswerDate: Joi.date().iso().greater('now'),
       }),
     }),
   })
