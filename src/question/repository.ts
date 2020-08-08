@@ -1,7 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
 import docClient from '../util/document-client';
 import { Meeting } from '../meeting/Meeting';
-import { GetQuestionsOfMeetingResponse, Question, QuestionBody, QuestionStatus } from './Question';
+import {
+  GetQuestionsOfMeetingResponse,
+  Question,
+  QuestionStatus,
+  QuestionBodyWithUserId,
+} from './Question';
 import { NotFoundException } from '../error/not-found-exception';
 const TableName = `${process.env.QUESTIONS_TABLE}-${process.env.NODE_ENV}`;
 
@@ -15,7 +20,7 @@ export const getQuestion = async (id: Question['id']): Promise<Question | undefi
   return question as Question;
 };
 
-export const createQuestion = async (question: QuestionBody): Promise<Question> => {
+export const createQuestion = async (question: QuestionBodyWithUserId): Promise<Question> => {
   const id = uuidv4();
   const questionDocument = {
     id,

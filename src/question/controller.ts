@@ -1,20 +1,21 @@
-import { APIGatewayProxyHandler, DynamoDBStreamHandler } from 'aws-lambda';
+import { DynamoDBStreamHandler, APIGatewayProxyWithCognitoAuthorizerHandler } from 'aws-lambda';
 import * as HttpStatus from 'http-status-codes';
 import { createProxyResult } from '../util';
-import { CreateQuestionResponse, QuestionBody, Question } from './Question';
+import { QuestionBody } from './Question';
 import * as QuestionService from './service';
 
-export const createQuestion: APIGatewayProxyHandler = async (event) => {
+export const createQuestion: APIGatewayProxyWithCognitoAuthorizerHandler = async (event) => {
   const questionBody = JSON.parse(event.body!) as QuestionBody;
-  const { id, content, voteCount, createdAt } = await QuestionService.createQuestion(questionBody);
-  const questionResponse: CreateQuestionResponse = {
-    id,
-    content,
-    voteCount,
-    createdAt,
-  };
+  const {
+    requestContext: {
+      authorizer: {
+        claims: { sub: userId },
+      },
+    },
+  } = event;
+  const { id } = await QuestionService.createQuestion({ ...questionBody, userId });
 
-  return createProxyResult(HttpStatus.CREATED, questionResponse);
+  return createProxyResult(HttpStatus.CREATED, { id });
 };
 
 export const updateVoteCountsOfQuestions: DynamoDBStreamHandler = async (event) => {

@@ -13,6 +13,6 @@ export type Question = {
   createdAt: number;
 };
 
-export type QuestionBody = Omit<Question, 'id' | 'voteCount' | 'status' | 'createdAt'>;
-export type CreateQuestionResponse = Omit<Question, 'userId' | 'meetingId' | 'status'>;
+export type QuestionBody = Pick<Question, 'meetingId' | 'content'>;
+export type QuestionBodyWithUserId = QuestionBody & Pick<Question, 'userId'>;
 export type GetQuestionsOfMeetingResponse = Omit<Question, 'userId' | 'meetingId' | 'status'>[];
