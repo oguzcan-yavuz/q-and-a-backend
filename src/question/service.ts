@@ -2,7 +2,7 @@ import { NotFoundException } from '../error/not-found-exception';
 import { Meeting } from '../meeting/Meeting';
 import { calculateVoteAddition } from '../util';
 
-import { GetQuestionsOfMeetingResponse, Question, QuestionBody } from './Question';
+import { GetQuestionsOfMeetingResponse, Question, QuestionBodyWithUserId } from './Question';
 import * as QuestionRepository from './repository';
 import { VoteType } from '../vote/Vote';
 
@@ -16,8 +16,8 @@ export const getQuestion = async (id: Question['id']): Promise<Question> => {
   return question;
 };
 
-export const createQuestion = (questionBody: QuestionBody): Promise<Question> => {
-  return QuestionRepository.createQuestion(questionBody);
+export const createQuestion = (question: QuestionBodyWithUserId): Promise<Question> => {
+  return QuestionRepository.createQuestion(question);
 };
 
 export const getQuestionsOfMeeting = (

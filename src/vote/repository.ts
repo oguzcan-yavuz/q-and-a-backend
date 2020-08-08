@@ -1,7 +1,7 @@
 import docClient from '../util/document-client';
 import { Vote } from './Vote';
 
-const TableName = process.env.VOTES_TABLE as string;
+const TableName = `${process.env.VOTES_TABLE}-${process.env.NODE_ENV}`;
 
 export const voteQuestion = async ({
   meetingId,

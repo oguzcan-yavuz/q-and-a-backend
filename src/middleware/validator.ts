@@ -2,10 +2,14 @@ import { BadRequestException } from '../error/bad-request-exception';
 import { APIGatewayProxyEvent } from 'aws-lambda';
 
 export const validator = (schema) => (event: APIGatewayProxyEvent) => {
-  const eventWithParsedBody = { ...event, body: JSON.parse(event.body || '{}') };
-  const { error } = schema.validate(eventWithParsedBody);
+  try {
+    const eventWithParsedBody = { ...event, body: JSON.parse(event.body || '{}') };
+    const { error } = schema.validate(eventWithParsedBody);
 
-  if (error) {
-    throw new BadRequestException(error.message);
+    if (error) {
+      throw error;
+    }
+  } catch (err) {
+    throw new BadRequestException(err.message);
   }
 };

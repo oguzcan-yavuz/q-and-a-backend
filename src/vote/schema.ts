@@ -8,9 +8,9 @@ const voteQuestionSchema = Joi.object()
       questionId: Joi.string().guid({ version: 'uuidv4' }).required(),
     }),
     body: Joi.object().keys({
-      userId: Joi.string().required(),
-      type: Joi.string()
-        .valid(...Object.values(VoteType))
+      type: Joi.number()
+        .valid(...Object.values(VoteType).filter((voteType) => typeof voteType === 'number'))
+        .strict()
         .required(),
     }),
   })
