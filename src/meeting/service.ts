@@ -5,8 +5,8 @@ import { GetQuestionsOfMeetingResponse } from '../question/Question';
 import { Meeting, MeetingBody, MeetingStatus } from './Meeting';
 import * as MeetingRepository from './repository';
 
-export const getMeeting = async (id: Meeting['id']): Promise<Meeting> => {
-  const meeting = await MeetingRepository.getMeeting(id);
+export const getMeeting = async (meetingId: Meeting['id']): Promise<Meeting> => {
+  const meeting = await MeetingRepository.getMeeting(meetingId);
 
   if (!meeting || meeting.status === MeetingStatus.Deleted) {
     throw new NotFoundException();
@@ -19,25 +19,25 @@ export const createMeeting = (meeting: MeetingBody): Promise<Pick<Meeting, 'id'>
   return MeetingRepository.createMeeting(meeting);
 };
 
-export const deleteMeeting = async (id: Meeting['id']): Promise<void> => {
-  return MeetingRepository.deleteMeeting(id);
+export const deleteMeeting = async (meetingId: Meeting['id']): Promise<void> => {
+  return MeetingRepository.deleteMeeting(meetingId);
 };
 
 export const updateMeeting = async (
-  id: Meeting['id'],
+  meetingId: Meeting['id'],
   meeting: Partial<MeetingBody>
 ): Promise<void> => {
-  return MeetingRepository.updateMeeting(id, meeting);
+  return MeetingRepository.updateMeeting(meetingId, meeting);
 };
 
 export const getQuestionsOfMeeting = async (
-  id: Meeting['id']
+  meetingId: Meeting['id']
 ): Promise<GetQuestionsOfMeetingResponse> => {
-  return QuestionService.getQuestionsOfMeeting(id);
+  return QuestionService.getQuestionsOfMeeting(meetingId);
 };
 
-export const getOpenMeeting = async (id: Meeting['id']): Promise<Meeting> => {
-  const meeting = await MeetingRepository.getMeeting(id);
+export const getOpenMeeting = async (meetingId: Meeting['id']): Promise<Meeting> => {
+  const meeting = await MeetingRepository.getMeeting(meetingId);
 
   if (!meeting || meeting.status === MeetingStatus.Deleted) {
     throw new NotFoundException();

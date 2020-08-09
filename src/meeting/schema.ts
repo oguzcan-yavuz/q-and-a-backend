@@ -4,7 +4,7 @@ import { validator } from '../middleware/validator';
 const getMeetingSchema = Joi.object()
   .keys({
     pathParameters: Joi.object().keys({
-      id: Joi.string().guid({ version: 'uuidv4' }).required(),
+      meetingId: Joi.string().guid({ version: 'uuidv4' }).required(),
     }),
   })
   .unknown();
@@ -29,7 +29,7 @@ const createMeetingSchema = Joi.object()
 const deleteMeetingSchema = Joi.object()
   .keys({
     pathParameters: Joi.object().keys({
-      id: Joi.string().guid({ version: 'uuidv4' }).required(),
+      meetingId: Joi.string().guid({ version: 'uuidv4' }).required(),
     }),
   })
   .unknown();
@@ -37,7 +37,7 @@ const deleteMeetingSchema = Joi.object()
 const updateMeetingSchema = Joi.object()
   .keys({
     pathParameters: Joi.object().keys({
-      id: Joi.string().guid({ version: 'uuidv4' }).required(),
+      meetingId: Joi.string().guid({ version: 'uuidv4' }).required(),
     }),
     body: Joi.object().keys({
       title: Joi.string(),
@@ -57,7 +57,7 @@ const updateMeetingSchema = Joi.object()
 const getQuestionsOfMeetingSchema = Joi.object()
   .keys({
     pathParameters: Joi.object().keys({
-      id: Joi.string().guid({ version: 'uuidv4' }).required(),
+      meetingId: Joi.string().guid({ version: 'uuidv4' }).required(),
     }),
   })
   .unknown();
