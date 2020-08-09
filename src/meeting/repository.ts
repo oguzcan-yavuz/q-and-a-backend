@@ -5,10 +5,10 @@ import { NotFoundException } from '../error/not-found-exception';
 import { generateSetExpressions } from '../util';
 const TableName = `${process.env.MEETINGS_TABLE}-${process.env.NODE_ENV}`;
 
-export const getMeeting = async (id: Meeting['id']): Promise<Meeting | undefined> => {
+export const getMeeting = async (meetingId: Meeting['id']): Promise<Meeting | undefined> => {
   const params = {
     TableName,
-    Key: { id },
+    Key: { id: meetingId },
   };
   const { Item: meeting } = await docClient.get(params).promise();
 
@@ -16,9 +16,9 @@ export const getMeeting = async (id: Meeting['id']): Promise<Meeting | undefined
 };
 
 export const createMeeting = async (meeting: MeetingBody): Promise<Pick<Meeting, 'id'>> => {
-  const id = uuidv4();
+  const meetingId = uuidv4();
   const meetingDocument = {
-    id,
+    id: meetingId,
     status: MeetingStatus.Open,
     ...meeting,
   } as Meeting;
@@ -29,14 +29,14 @@ export const createMeeting = async (meeting: MeetingBody): Promise<Pick<Meeting,
 
   await docClient.put(params).promise();
 
-  return { id };
+  return { id: meetingId };
 };
 
-export const deleteMeeting = async (id: Meeting['id']): Promise<void> => {
+export const deleteMeeting = async (meetingId: Meeting['id']): Promise<void> => {
   try {
     const params = {
       TableName,
-      Key: { id },
+      Key: { id: meetingId },
       ConditionExpression: 'attribute_exists(id) AND #status <> :status',
       UpdateExpression: 'SET #status = :status',
       ExpressionAttributeNames: {
@@ -54,7 +54,7 @@ export const deleteMeeting = async (id: Meeting['id']): Promise<void> => {
 };
 
 export const updateMeeting = async (
-  id: Meeting['id'],
+  meetingId: Meeting['id'],
   meeting: Partial<MeetingBody>
 ): Promise<void> => {
   try {
@@ -65,7 +65,7 @@ export const updateMeeting = async (
     } = generateSetExpressions(meeting);
     const params = {
       TableName,
-      Key: { id },
+      Key: { id: meetingId },
       ConditionExpression: 'attribute_exists(id) AND #status <> :status',
       UpdateExpression,
       ExpressionAttributeNames: {

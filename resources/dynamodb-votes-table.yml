@@ -44,7 +44,9 @@ Resources:
 Outputs:
   VotesTableArn:
     Value:
-      "Fn::GetAtt": [ VotesTable, Arn ]
+      Fn::GetAtt: [ VotesTable, Arn ]
   VotesTableStreamArn:
     Value:
-      "Fn::GetAtt": [ VotesTable, StreamArn ]
+      Fn::GetAtt: [ VotesTable, StreamArn ]
+    Export:
+      Name: VotesTableStreamArn

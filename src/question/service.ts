@@ -6,8 +6,8 @@ import { GetQuestionsOfMeetingResponse, Question, QuestionBodyWithUserId } from 
 import * as QuestionRepository from './repository';
 import { VoteType } from '../vote/Vote';
 
-export const getQuestion = async (id: Question['id']): Promise<Question> => {
-  const question = await QuestionRepository.getQuestion(id);
+export const getQuestion = async (questionId: Question['id']): Promise<Question> => {
+  const question = await QuestionRepository.getQuestion(questionId);
 
   if (!question) {
     throw new NotFoundException();
@@ -16,7 +16,7 @@ export const getQuestion = async (id: Question['id']): Promise<Question> => {
   return question;
 };
 
-export const createQuestion = (question: QuestionBodyWithUserId): Promise<Question> => {
+export const createQuestion = (question: QuestionBodyWithUserId): Promise<Pick<Question, 'id'>> => {
   return QuestionRepository.createQuestion(question);
 };
 

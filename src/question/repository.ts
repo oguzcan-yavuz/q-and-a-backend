@@ -10,20 +10,22 @@ import {
 import { NotFoundException } from '../error/not-found-exception';
 const TableName = `${process.env.QUESTIONS_TABLE}-${process.env.NODE_ENV}`;
 
-export const getQuestion = async (id: Question['id']): Promise<Question | undefined> => {
+export const getQuestion = async (questionId: Question['id']): Promise<Question | undefined> => {
   const params = {
     TableName,
-    Key: { id },
+    Key: { id: questionId },
   };
   const { Item: question } = await docClient.get(params).promise();
 
   return question as Question;
 };
 
-export const createQuestion = async (question: QuestionBodyWithUserId): Promise<Question> => {
-  const id = uuidv4();
+export const createQuestion = async (
+  question: QuestionBodyWithUserId
+): Promise<Pick<Question, 'id'>> => {
+  const questionId = uuidv4();
   const questionDocument = {
-    id,
+    id: questionId,
     voteCount: 0,
     createdAt: Date.now(),
     ...question,
@@ -35,7 +37,7 @@ export const createQuestion = async (question: QuestionBodyWithUserId): Promise<
 
   await docClient.put(params).promise();
 
-  return questionDocument;
+  return { id: questionId };
 };
 
 export const getQuestionsOfMeeting = async (
@@ -56,11 +58,14 @@ export const getQuestionsOfMeeting = async (
   return questions as GetQuestionsOfMeetingResponse;
 };
 
-export const updateVoteCount = async (id: Question['id'], addition: number): Promise<void> => {
+export const updateVoteCount = async (
+  questionId: Question['id'],
+  addition: number
+): Promise<void> => {
   try {
     const params = {
       TableName,
-      Key: { id },
+      Key: { id: questionId },
       ConditionExpression: 'attribute_exists(id) AND #status <> :status',
       UpdateExpression: 'ADD voteCount :addition',
       ExpressionAttributeNames: {
