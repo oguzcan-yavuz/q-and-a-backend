@@ -28,7 +28,7 @@
     "lint-staged": "^10.2.11",
     "prettier": "^2.0.5",
     "serverless": "^1.78.1",
-    "serverless-dotenv-plugin": "^2.4.2",
+    "serverless-dotenv-plugin": "^3.0.0",
     "serverless-dynamodb-local": "^0.2.30",
     "serverless-middleware": "0.0.10",
     "serverless-offline": "^6.4.0",
