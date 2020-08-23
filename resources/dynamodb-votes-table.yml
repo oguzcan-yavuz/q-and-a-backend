@@ -3,7 +3,7 @@ Resources:
     Type: 'AWS::DynamoDB::Table'
     DeletionPolicy: Retain
     Properties:
-      TableName: ${self:provider.environment.VOTES_TABLE}-${self:provider.stage}
+      TableName: ${env:VOTES_TABLE}-${self:provider.stage}
       AttributeDefinitions:
         -
           AttributeName: questionId

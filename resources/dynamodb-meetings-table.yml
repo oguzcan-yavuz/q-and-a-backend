@@ -3,7 +3,7 @@ Resources:
     Type: 'AWS::DynamoDB::Table'
     DeletionPolicy: Retain
     Properties:
-      TableName: ${self:provider.environment.MEETINGS_TABLE}-${self:provider.stage}
+      TableName: ${env:MEETINGS_TABLE}-${self:provider.stage}
       AttributeDefinitions:
         -
           AttributeName: id
