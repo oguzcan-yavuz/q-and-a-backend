@@ -33,7 +33,7 @@
     "serverless-middleware": "0.0.10",
     "serverless-offline": "^6.4.0",
     "serverless-offline-dynamodb-streams": "^4.1.0",
-    "serverless-webpack": "^5.3.2",
+    "serverless-webpack": "^5.3.4",
     "ts-jest": "^26.2.0",
     "ts-loader": "^8.0.1",
     "tslint": "^6.1.3",
