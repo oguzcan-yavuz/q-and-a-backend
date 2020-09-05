@@ -133,7 +133,7 @@ functions:
           enabled: true
           type: dynamodb
           arn:
-            Fn::GetAtt: [VotesTable, LatestStreamArn]
+            Fn::GetAtt: [VotesTable, StreamArn]
           batchSize: 10
           startingPosition: LATEST
   # Vote endpoints

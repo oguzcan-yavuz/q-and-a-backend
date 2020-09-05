@@ -1,5 +1,5 @@
 import { Container } from 'typedi';
-import { APIGatewayProxyWithCognitoAuthorizerHandler, DynamoDBStreamHandler } from 'aws-lambda';
+import { APIGatewayProxyWithCognitoAuthorizerHandler } from 'aws-lambda';
 import { MeetingController } from './controller';
 
 const meetingController = Container.get(MeetingController);

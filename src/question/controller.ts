@@ -18,9 +18,8 @@ export class QuestionController {
   async createQuestion(
     event: APIGatewayProxyWithCognitoAuthorizerEvent
   ): Promise<APIGatewayProxyResult> {
-    validate(createQuestionSchema, event);
-
-    const questionBody = JSON.parse(event.body!) as QuestionBody;
+    const eventWithParsedBody = validate(createQuestionSchema, event);
+    const questionBody = eventWithParsedBody.body! as QuestionBody;
     const {
       requestContext: {
         authorizer: {

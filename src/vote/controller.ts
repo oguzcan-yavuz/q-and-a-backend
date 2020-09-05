@@ -14,9 +14,8 @@ export class VoteController {
   async voteQuestion(
     event: APIGatewayProxyWithCognitoAuthorizerEvent
   ): Promise<APIGatewayProxyResult> {
-    validate(voteQuestionSchema, event);
-
-    const questionId = event.pathParameters!.questionId as Vote['questionId'];
+    const eventWithParsedBody = validate(voteQuestionSchema, event);
+    const questionId = eventWithParsedBody.pathParameters!.questionId as Vote['questionId'];
     const { type } = JSON.parse(event.body!) as Pick<Vote, 'type'>;
     const {
       requestContext: {
@@ -37,9 +36,8 @@ export class VoteController {
   async getVotesOfCurrentUser(
     event: APIGatewayProxyWithCognitoAuthorizerEvent
   ): Promise<APIGatewayProxyResult> {
-    validate(getVotesOfCurrentUserSchema, event);
-
-    const meetingId = event.pathParameters!.meetingId as Vote['meetingId'];
+    const eventWithParsedBody = validate(getVotesOfCurrentUserSchema, event);
+    const meetingId = eventWithParsedBody.pathParameters!.meetingId as Vote['meetingId'];
     const {
       requestContext: {
         authorizer: {

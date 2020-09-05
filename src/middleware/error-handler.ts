@@ -1,6 +1,7 @@
 import { HttpException } from '../error/http-exception';
-import { APIGatewayProxyEvent } from 'aws-lambda';
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import * as HttpStatus from 'http-status-codes';
+import { createProxyResult } from '../util';
 
 type PreviousHandlerError = {
   prev: HttpException | Error;
@@ -9,7 +10,7 @@ type PreviousHandlerError = {
 export const errorHandler = (
   event: APIGatewayProxyEvent,
   { prev: error }: PreviousHandlerError
-) => {
+): APIGatewayProxyResult => {
   let statusCode;
   if (error instanceof HttpException) {
     statusCode = error.statusCode;
@@ -18,8 +19,5 @@ export const errorHandler = (
     console.error(error);
   }
 
-  return {
-    statusCode,
-    body: JSON.stringify({ message: error.message }),
-  };
+  return createProxyResult(statusCode, { message: error.message });
 };

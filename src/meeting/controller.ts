@@ -20,9 +20,8 @@ export class MeetingController {
   async getMeeting(
     event: APIGatewayProxyWithCognitoAuthorizerEvent
   ): Promise<APIGatewayProxyResult> {
-    validate(getMeetingSchema, event);
-
-    const meetingId = event.pathParameters!.meetingId as Meeting['id'];
+    const eventWithParsedBody = validate(getMeetingSchema, event);
+    const meetingId = eventWithParsedBody.pathParameters!.meetingId as Meeting['id'];
     const meeting = await this.meetingService.getMeeting(meetingId);
 
     return createProxyResult(HttpStatus.OK, meeting);
@@ -31,9 +30,8 @@ export class MeetingController {
   async createMeeting(
     event: APIGatewayProxyWithCognitoAuthorizerEvent
   ): Promise<APIGatewayProxyResult> {
-    validate(createMeetingSchema, event);
-
-    const meeting = JSON.parse(event.body!) as MeetingBody;
+    const eventWithParsedBody = validate(createMeetingSchema, event);
+    const meeting = eventWithParsedBody.body! as MeetingBody;
     const { id } = await this.meetingService.createMeeting(meeting);
 
     return createProxyResult(HttpStatus.CREATED, { id });
@@ -42,9 +40,8 @@ export class MeetingController {
   async deleteMeeting(
     event: APIGatewayProxyWithCognitoAuthorizerEvent
   ): Promise<APIGatewayProxyResult> {
-    validate(deleteMeetingSchema, event);
-
-    const meetingId = event.pathParameters!.meetingId as Meeting['id'];
+    const eventWithParsedBody = validate(deleteMeetingSchema, event);
+    const meetingId = eventWithParsedBody.pathParameters!.meetingId as Meeting['id'];
     await this.meetingService.deleteMeeting(meetingId);
 
     return createProxyResult(HttpStatus.NO_CONTENT, {});
@@ -53,9 +50,8 @@ export class MeetingController {
   async updateMeeting(
     event: APIGatewayProxyWithCognitoAuthorizerEvent
   ): Promise<APIGatewayProxyResult> {
-    validate(updateMeetingSchema, event);
-
-    const meetingId = event.pathParameters!.meetingId as Meeting['id'];
+    const eventWithParsedBody = validate(updateMeetingSchema, event);
+    const meetingId = eventWithParsedBody.pathParameters!.meetingId as Meeting['id'];
     const meeting = JSON.parse(event.body!) as Partial<MeetingBody>;
     await this.meetingService.updateMeeting(meetingId, meeting);
 
@@ -65,9 +61,8 @@ export class MeetingController {
   async getQuestionsOfMeeting(
     event: APIGatewayProxyWithCognitoAuthorizerEvent
   ): Promise<APIGatewayProxyResult> {
-    validate(getQuestionsOfMeetingSchema, event);
-
-    const meetingId = event.pathParameters!.meetingId as Meeting['id'];
+    const eventWithParsedBody = validate(getQuestionsOfMeetingSchema, event);
+    const meetingId = eventWithParsedBody.pathParameters!.meetingId as Meeting['id'];
     const questions = await this.meetingService.getQuestionsOfMeeting(meetingId);
 
     return createProxyResult(HttpStatus.OK, questions);
