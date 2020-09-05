@@ -3,14 +3,17 @@ import { ConflictException } from '../error/conflict-exception';
 import { QuestionService } from '../question/service';
 import { GetQuestionsOfMeetingResponse } from '../question/Question';
 import { Meeting, MeetingBody, MeetingStatus } from './Meeting';
-import * as MeetingRepository from './repository';
+import { MeetingRepository } from './repository';
 import { Service } from 'typedi';
 
 @Service()
 export class MeetingService {
-  constructor(private readonly questionService: QuestionService) {}
+  constructor(
+    private readonly meetingRepository: MeetingRepository,
+    private readonly questionService: QuestionService
+  ) {}
   async getMeeting(meetingId: Meeting['id']): Promise<Meeting> {
-    const meeting = await MeetingRepository.getMeeting(meetingId);
+    const meeting = await this.meetingRepository.getMeeting(meetingId);
 
     if (!meeting || meeting.status === MeetingStatus.Deleted) {
       throw new NotFoundException();
@@ -20,15 +23,15 @@ export class MeetingService {
   }
 
   createMeeting(meeting: MeetingBody): Promise<Pick<Meeting, 'id'>> {
-    return MeetingRepository.createMeeting(meeting);
+    return this.meetingRepository.createMeeting(meeting);
   }
 
   async deleteMeeting(meetingId: Meeting['id']): Promise<void> {
-    return MeetingRepository.deleteMeeting(meetingId);
+    return this.meetingRepository.deleteMeeting(meetingId);
   }
 
   async updateMeeting(meetingId: Meeting['id'], meeting: Partial<MeetingBody>): Promise<void> {
-    return MeetingRepository.updateMeeting(meetingId, meeting);
+    return this.meetingRepository.updateMeeting(meetingId, meeting);
   }
 
   async getQuestionsOfMeeting(meetingId: Meeting['id']): Promise<GetQuestionsOfMeetingResponse> {
@@ -36,7 +39,7 @@ export class MeetingService {
   }
 
   async getOpenMeeting(meetingId: Meeting['id']): Promise<Meeting> {
-    const meeting = await MeetingRepository.getMeeting(meetingId);
+    const meeting = await this.meetingRepository.getMeeting(meetingId);
 
     if (!meeting || meeting.status === MeetingStatus.Deleted) {
       throw new NotFoundException();

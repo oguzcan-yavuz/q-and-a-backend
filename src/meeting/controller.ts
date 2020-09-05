@@ -1,41 +1,75 @@
-import { APIGatewayProxyHandler } from 'aws-lambda';
-import * as MeetingService from './service';
+import { APIGatewayProxyWithCognitoAuthorizerEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { MeetingService } from './service';
 import * as HttpStatus from 'http-status-codes';
 import { Meeting, MeetingBody } from './Meeting';
 import { createProxyResult } from '../util';
+import { validate } from '../util/validate';
+import {
+  getMeetingSchema,
+  createMeetingSchema,
+  deleteMeetingSchema,
+  updateMeetingSchema,
+  getQuestionsOfMeetingSchema,
+} from './schema';
+import { Service } from 'typedi';
 
-export const getMeeting: APIGatewayProxyHandler = async (event) => {
-  const meetingId = event.pathParameters!.meetingId as Meeting['id'];
-  const meeting = await MeetingService.getMeeting(meetingId);
+@Service()
+export class MeetingController {
+  constructor(private readonly meetingService: MeetingService) {}
 
-  return createProxyResult(HttpStatus.OK, meeting);
-};
+  async getMeeting(
+    event: APIGatewayProxyWithCognitoAuthorizerEvent
+  ): Promise<APIGatewayProxyResult> {
+    validate(getMeetingSchema, event);
 
-export const createMeeting: APIGatewayProxyHandler = async (event) => {
-  const meeting = JSON.parse(event.body!) as MeetingBody;
-  const { id } = await MeetingService.createMeeting(meeting);
+    const meetingId = event.pathParameters!.meetingId as Meeting['id'];
+    const meeting = await this.meetingService.getMeeting(meetingId);
 
-  return createProxyResult(HttpStatus.CREATED, { id });
-};
+    return createProxyResult(HttpStatus.OK, meeting);
+  }
 
-export const deleteMeeting: APIGatewayProxyHandler = async (event) => {
-  const meetingId = event.pathParameters!.meetingId as Meeting['id'];
-  await MeetingService.deleteMeeting(meetingId);
+  async createMeeting(
+    event: APIGatewayProxyWithCognitoAuthorizerEvent
+  ): Promise<APIGatewayProxyResult> {
+    validate(createMeetingSchema, event);
 
-  return createProxyResult(HttpStatus.NO_CONTENT, {});
-};
+    const meeting = JSON.parse(event.body!) as MeetingBody;
+    const { id } = await this.meetingService.createMeeting(meeting);
 
-export const updateMeeting: APIGatewayProxyHandler = async (event) => {
-  const meetingId = event.pathParameters!.meetingId as Meeting['id'];
-  const meeting = JSON.parse(event.body!) as Partial<MeetingBody>;
-  await MeetingService.updateMeeting(meetingId, meeting);
+    return createProxyResult(HttpStatus.CREATED, { id });
+  }
 
-  return createProxyResult(HttpStatus.NO_CONTENT, {});
-};
+  async deleteMeeting(
+    event: APIGatewayProxyWithCognitoAuthorizerEvent
+  ): Promise<APIGatewayProxyResult> {
+    validate(deleteMeetingSchema, event);
 
-export const getQuestionsOfMeeting: APIGatewayProxyHandler = async (event) => {
-  const meetingId = event.pathParameters!.meetingId as Meeting['id'];
-  const questions = await MeetingService.getQuestionsOfMeeting(meetingId);
+    const meetingId = event.pathParameters!.meetingId as Meeting['id'];
+    await this.meetingService.deleteMeeting(meetingId);
 
-  return createProxyResult(HttpStatus.OK, questions);
-};
+    return createProxyResult(HttpStatus.NO_CONTENT, {});
+  }
+
+  async updateMeeting(
+    event: APIGatewayProxyWithCognitoAuthorizerEvent
+  ): Promise<APIGatewayProxyResult> {
+    validate(updateMeetingSchema, event);
+
+    const meetingId = event.pathParameters!.meetingId as Meeting['id'];
+    const meeting = JSON.parse(event.body!) as Partial<MeetingBody>;
+    await this.meetingService.updateMeeting(meetingId, meeting);
+
+    return createProxyResult(HttpStatus.NO_CONTENT, {});
+  }
+
+  async getQuestionsOfMeeting(
+    event: APIGatewayProxyWithCognitoAuthorizerEvent
+  ): Promise<APIGatewayProxyResult> {
+    validate(getQuestionsOfMeetingSchema, event);
+
+    const meetingId = event.pathParameters!.meetingId as Meeting['id'];
+    const questions = await this.meetingService.getQuestionsOfMeeting(meetingId);
+
+    return createProxyResult(HttpStatus.OK, questions);
+  }
+}

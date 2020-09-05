@@ -1,5 +1,4 @@
 import * as Joi from '@hapi/joi';
-import { validator } from '../middleware/validator';
 import { VoteType } from './Vote';
 
 export const voteQuestionSchema = Joi.object()
@@ -23,6 +22,3 @@ export const getVotesOfCurrentUserSchema = Joi.object()
     }),
   })
   .unknown();
-
-export const voteQuestionValidator = validator(voteQuestionSchema);
-export const getVotesOfCurrentUserValidator = validator(getVotesOfCurrentUserSchema);
