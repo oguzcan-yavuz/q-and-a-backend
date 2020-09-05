@@ -2,7 +2,7 @@ import { NotFoundException } from '../error/not-found-exception';
 import { Meeting } from '../meeting/Meeting';
 import { calculateVoteAddition } from '../util';
 import { GetQuestionsOfMeetingResponse, Question, QuestionBodyWithUserId } from './Question';
-import * as QuestionRepository from './repository';
+import { QuestionRepository } from './repository';
 import { VoteType } from '../vote/Vote';
 import { Service } from 'typedi';
 
@@ -14,8 +14,10 @@ type VoteTypeChange = {
 
 @Service()
 export class QuestionService {
+  constructor(private readonly questionRepository: QuestionRepository) {}
+
   async getQuestion(questionId: Question['id']): Promise<Question> {
-    const question = await QuestionRepository.getQuestion(questionId);
+    const question = await this.questionRepository.getQuestion(questionId);
 
     if (!question) {
       throw new NotFoundException();
@@ -25,11 +27,11 @@ export class QuestionService {
   }
 
   createQuestion(question: QuestionBodyWithUserId): Promise<Pick<Question, 'id'>> {
-    return QuestionRepository.createQuestion(question);
+    return this.questionRepository.createQuestion(question);
   }
 
   getQuestionsOfMeeting(meetingId: Meeting['id']): Promise<GetQuestionsOfMeetingResponse> {
-    return QuestionRepository.getQuestionsOfMeeting(meetingId);
+    return this.questionRepository.getQuestionsOfMeeting(meetingId);
   }
 
   updateVoteCountsOfQuestions(voteTypeChanges: VoteTypeChange[]): Promise<void[]> {
@@ -37,7 +39,7 @@ export class QuestionService {
       voteTypeChanges.map(({ questionId, oldVoteType, newVoteType }) => {
         const addition = calculateVoteAddition(oldVoteType, newVoteType);
 
-        return QuestionRepository.updateVoteCount(questionId, addition);
+        return this.questionRepository.updateVoteCount(questionId, addition);
       })
     );
   }

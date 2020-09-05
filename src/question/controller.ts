@@ -1,31 +1,47 @@
-import { DynamoDBStreamHandler, APIGatewayProxyWithCognitoAuthorizerHandler } from 'aws-lambda';
+import {
+  DynamoDBStreamEvent,
+  APIGatewayProxyResult,
+  APIGatewayProxyWithCognitoAuthorizerEvent,
+} from 'aws-lambda';
 import * as HttpStatus from 'http-status-codes';
 import { createProxyResult } from '../util';
 import { QuestionBody } from './Question';
-import * as QuestionService from './service';
+import { QuestionService } from './service';
+import { validate } from '../util/validate';
+import { createQuestionSchema } from './schema';
+import { Service } from 'typedi';
 
-export const createQuestion: APIGatewayProxyWithCognitoAuthorizerHandler = async (event) => {
-  const questionBody = JSON.parse(event.body!) as QuestionBody;
-  const {
-    requestContext: {
-      authorizer: {
-        claims: { sub: userId },
+@Service()
+export class QuestionController {
+  constructor(private readonly questionService: QuestionService) {}
+
+  async createQuestion(
+    event: APIGatewayProxyWithCognitoAuthorizerEvent
+  ): Promise<APIGatewayProxyResult> {
+    validate(createQuestionSchema, event);
+
+    const questionBody = JSON.parse(event.body!) as QuestionBody;
+    const {
+      requestContext: {
+        authorizer: {
+          claims: { sub: userId },
+        },
       },
-    },
-  } = event;
-  const { id } = await QuestionService.createQuestion({ ...questionBody, userId });
+    } = event;
+    const { id } = await this.questionService.createQuestion({ ...questionBody, userId });
 
-  return createProxyResult(HttpStatus.CREATED, { id });
-};
+    return createProxyResult(HttpStatus.CREATED, { id });
+  }
 
-export const updateVoteCountsOfQuestions: DynamoDBStreamHandler = async (event) => {
-  const records = event.Records.map((record) => {
-    const questionId = (record.dynamodb!.OldImage || record.dynamodb!.NewImage)!.questionId!.S!;
-    const oldVoteType = parseInt(record.dynamodb!.OldImage?.type!.N!, 10);
-    const newVoteType = parseInt(record.dynamodb!.NewImage?.type!.N!, 10);
+  async updateVoteCountsOfQuestions(event: DynamoDBStreamEvent): Promise<void> {
+    const records = event.Records.map((record) => {
+      const questionId = (record.dynamodb!.OldImage || record.dynamodb!.NewImage)!.questionId!.S!;
+      const oldVoteType = parseInt(record.dynamodb!.OldImage?.type!.N!, 10);
+      const newVoteType = parseInt(record.dynamodb!.NewImage?.type!.N!, 10);
 
-    return { questionId, oldVoteType, newVoteType };
-  });
+      return { questionId, oldVoteType, newVoteType };
+    });
 
-  await QuestionService.updateVoteCountsOfQuestions(records);
-};
+    await this.questionService.updateVoteCountsOfQuestions(records);
+  }
+}

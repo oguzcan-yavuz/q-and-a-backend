@@ -4,6 +4,8 @@ import * as HttpStatus from 'http-status-codes';
 import { Vote } from './Vote';
 import { createProxyResult } from '../util';
 import { Service } from 'typedi';
+import { validate } from '../util/validate';
+import { voteQuestionSchema, getVotesOfCurrentUserSchema } from './schema';
 
 @Service()
 export class VoteController {
@@ -12,6 +14,8 @@ export class VoteController {
   async voteQuestion(
     event: APIGatewayProxyWithCognitoAuthorizerEvent
   ): Promise<APIGatewayProxyResult> {
+    validate(voteQuestionSchema, event);
+
     const questionId = event.pathParameters!.questionId as Vote['questionId'];
     const { type } = JSON.parse(event.body!) as Pick<Vote, 'type'>;
     const {
@@ -33,6 +37,8 @@ export class VoteController {
   async getVotesOfCurrentUser(
     event: APIGatewayProxyWithCognitoAuthorizerEvent
   ): Promise<APIGatewayProxyResult> {
+    validate(getVotesOfCurrentUserSchema, event);
+
     const meetingId = event.pathParameters!.meetingId as Vote['meetingId'];
     const {
       requestContext: {

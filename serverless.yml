@@ -126,9 +126,7 @@ functions:
               Ref: APIGatewayCognitoAuthorizer
   # Question endpoints
   createQuestion:
-    handler:
-      - src/question/schema.createQuestionValidator
-      - src/question/controller.createQuestion
+    handler: src/question/controller.createQuestion
     events:
       - http:
           method: post
