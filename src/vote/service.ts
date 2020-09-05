@@ -1,39 +1,27 @@
 import { Vote } from './Vote';
-import * as VoteRepository from './repository';
-import * as MeetingService from '../meeting/service';
-import * as QuestionService from '../question/service';
+import { VoteRepository } from './repository';
+import { MeetingService } from '../meeting/service';
+import { QuestionService } from '../question/service';
 import { Service } from 'typedi';
 
 @Service()
 export class VoteService {
-  voteQuestion = async ({ questionId, userId, type }: Omit<Vote, 'meetingId'>): Promise<Vote> => {
-    const { meetingId } = await QuestionService.getQuestion(questionId);
-    await MeetingService.getOpenMeeting(meetingId);
+  constructor(
+    private readonly voteRepository: VoteRepository,
+    private readonly meetingService: MeetingService,
+    private readonly questionService: QuestionService
+  ) {}
+  async voteQuestion({ questionId, userId, type }: Omit<Vote, 'meetingId'>): Promise<Vote> {
+    const { meetingId } = await this.questionService.getQuestion(questionId);
+    await this.meetingService.getOpenMeeting(meetingId);
 
-    return VoteRepository.voteQuestion({ meetingId, questionId, userId, type });
-  };
+    return this.voteRepository.voteQuestion({ meetingId, questionId, userId, type });
+  }
 
-  getVotesOfCurrentUser = async ({
+  async getVotesOfCurrentUser({
     meetingId,
     userId,
-  }: Pick<Vote, 'meetingId' | 'userId'>): Promise<Vote[]> => {
-    return VoteRepository.getVotesOfCurrentUser({ meetingId, userId });
-  };
+  }: Pick<Vote, 'meetingId' | 'userId'>): Promise<Vote[]> {
+    return this.voteRepository.getVotesOfCurrentUser({ meetingId, userId });
+  }
 }
-// export const voteQuestion = async ({
-//   questionId,
-//   userId,
-//   type,
-// }: Omit<Vote, 'meetingId'>): Promise<Vote> => {
-//   const { meetingId } = await QuestionService.getQuestion(questionId);
-//   await MeetingService.getOpenMeeting(meetingId);
-
-//   return VoteRepository.voteQuestion({ meetingId, questionId, userId, type });
-// };
-
-// export const getVotesOfCurrentUser = async ({
-//   meetingId,
-//   userId,
-// }: Pick<Vote, 'meetingId' | 'userId'>): Promise<Vote[]> => {
-//   return VoteRepository.getVotesOfCurrentUser({ meetingId, userId });
-// };
