@@ -7,7 +7,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "offline": "serverless offline start --printOutput",
-    "commit": "npx git-cz",
+    "cm": "npx git-cz",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --format verbose",
     "lint:fix": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --fix --format verbose",
     "prettier": "prettier --write src/**",
@@ -46,7 +46,7 @@
   "author": "The serverless webpack authors (https://github.com/elastic-coders/serverless-webpack)",
   "license": "MIT",
   "engines": {
-    "node": "~12.18.2"
+    "node": "~12.18.3"
   },
   "husky": {
     "hooks": {
@@ -59,6 +59,9 @@
     }
   },
   "lint-staged": {
-    "*.{ts,tsx,js,css,md}": "prettier --write"
+    "*.{ts,tsx,js,css,md}": [
+      "npm run lint:fix",
+      "npm run prettier"
+    ]
   }
 }
