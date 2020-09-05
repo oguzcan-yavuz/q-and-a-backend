@@ -1,7 +1,7 @@
 import { BadRequestException } from '../error/bad-request-exception';
 import { APIGatewayProxyEvent } from 'aws-lambda';
 
-export const validator = (schema) => (event: APIGatewayProxyEvent): void => {
+export const validate = (schema, event: APIGatewayProxyEvent): void => {
   try {
     const eventWithParsedBody = { ...event, body: JSON.parse(event.body || '{}') };
     const { error } = schema.validate(eventWithParsedBody);

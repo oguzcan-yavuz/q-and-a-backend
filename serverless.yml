@@ -24,7 +24,7 @@ custom:
     useChildProcesses: true
   middleware:
     pre:
-      - src/middleware/source-map.noop
+      - src/middleware/global-imports.noop
     pos:
       - catch: src/middleware/error-handler.errorHandler
 
@@ -145,14 +145,12 @@ functions:
           enabled: true
           type: dynamodb
           arn:
-            Fn::ImportValue: VotesTableStreamArn
+            Fn::GetAtt: [VotesTable, LatestStreamArn]
           batchSize: 10
           startingPosition: LATEST
   # Vote endpoints
   voteQuestion:
-    handler:
-      - src/vote/schema.voteQuestionValidator
-      - src/vote/controller.voteQuestion
+    handler: src/vote/handler.voteQuestion
     events:
       - http:
           method: put
@@ -163,9 +161,7 @@ functions:
             authorizerId:
               Ref: APIGatewayCognitoAuthorizer
   getVotesOfCurrentUser:
-    handler:
-      - src/vote/schema.getVotesOfCurrentUserValidator
-      - src/vote/controller.getVotesOfCurrentUser
+    handler: src/vote/handler.getVotesOfCurrentUser
     events:
       - http:
           method: get

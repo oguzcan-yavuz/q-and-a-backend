@@ -9,6 +9,8 @@
     "outDir": ".build",
     "moduleResolution": "node",
     "lib": ["es7"],
-    "rootDir": "./"
+    "rootDir": "./",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   }
 }

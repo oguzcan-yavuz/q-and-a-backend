@@ -2,7 +2,7 @@ import * as Joi from '@hapi/joi';
 import { validator } from '../middleware/validator';
 import { VoteType } from './Vote';
 
-const voteQuestionSchema = Joi.object()
+export const voteQuestionSchema = Joi.object()
   .keys({
     pathParameters: Joi.object().keys({
       questionId: Joi.string().guid({ version: 'uuidv4' }).required(),
@@ -16,7 +16,7 @@ const voteQuestionSchema = Joi.object()
   })
   .unknown();
 
-const getVotesOfCurrentUserSchema = Joi.object()
+export const getVotesOfCurrentUserSchema = Joi.object()
   .keys({
     pathParameters: Joi.object().keys({
       meetingId: Joi.string().guid({ version: 'uuidv4' }).required(),
