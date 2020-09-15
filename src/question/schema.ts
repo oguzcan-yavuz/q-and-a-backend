@@ -1,7 +1,6 @@
 import * as Joi from '@hapi/joi';
-import { validator } from '../middleware/validator';
 
-const createQuestionSchema = Joi.object()
+export const createQuestionSchema = Joi.object()
   .keys({
     body: Joi.object().keys({
       meetingId: Joi.string().guid({ version: 'uuidv4' }).required(),
@@ -9,5 +8,3 @@ const createQuestionSchema = Joi.object()
     }),
   })
   .unknown();
-
-export const createQuestionValidator = validator(createQuestionSchema);

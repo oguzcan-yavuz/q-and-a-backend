@@ -16,7 +16,9 @@
   "dependencies": {
     "@hapi/joi": "^17.1.1",
     "http-status-codes": "^1.4.0",
-    "source-map-support": "^0.5.19"
+    "reflect-metadata": "^0.1.13",
+    "source-map-support": "^0.5.19",
+    "typedi": "^0.8.0"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.61",

@@ -1,30 +1,10 @@
 import { NotFoundException } from '../error/not-found-exception';
 import { Meeting } from '../meeting/Meeting';
 import { calculateVoteAddition } from '../util';
-
 import { GetQuestionsOfMeetingResponse, Question, QuestionBodyWithUserId } from './Question';
-import * as QuestionRepository from './repository';
+import { QuestionRepository } from './repository';
 import { VoteType } from '../vote/Vote';
-
-export const getQuestion = async (questionId: Question['id']): Promise<Question> => {
-  const question = await QuestionRepository.getQuestion(questionId);
-
-  if (!question) {
-    throw new NotFoundException();
-  }
-
-  return question;
-};
-
-export const createQuestion = (question: QuestionBodyWithUserId): Promise<Pick<Question, 'id'>> => {
-  return QuestionRepository.createQuestion(question);
-};
-
-export const getQuestionsOfMeeting = (
-  meetingId: Meeting['id']
-): Promise<GetQuestionsOfMeetingResponse> => {
-  return QuestionRepository.getQuestionsOfMeeting(meetingId);
-};
+import { Service } from 'typedi';
 
 type VoteTypeChange = {
   questionId: Question['id'];
@@ -32,11 +12,35 @@ type VoteTypeChange = {
   newVoteType: VoteType;
 };
 
-export const updateVoteCountsOfQuestions = (voteTypeChanges: VoteTypeChange[]): Promise<void[]> =>
-  Promise.all(
-    voteTypeChanges.map(({ questionId, oldVoteType, newVoteType }) => {
-      const addition = calculateVoteAddition(oldVoteType, newVoteType);
+@Service()
+export class QuestionService {
+  constructor(private readonly questionRepository: QuestionRepository) {}
 
-      return QuestionRepository.updateVoteCount(questionId, addition);
-    })
-  );
+  async getQuestion(questionId: Question['id']): Promise<Question> {
+    const question = await this.questionRepository.getQuestion(questionId);
+
+    if (!question) {
+      throw new NotFoundException();
+    }
+
+    return question;
+  }
+
+  createQuestion(question: QuestionBodyWithUserId): Promise<Pick<Question, 'id'>> {
+    return this.questionRepository.createQuestion(question);
+  }
+
+  getQuestionsOfMeeting(meetingId: Meeting['id']): Promise<GetQuestionsOfMeetingResponse> {
+    return this.questionRepository.getQuestionsOfMeeting(meetingId);
+  }
+
+  updateVoteCountsOfQuestions(voteTypeChanges: VoteTypeChange[]): Promise<void[]> {
+    return Promise.all(
+      voteTypeChanges.map(({ questionId, oldVoteType, newVoteType }) => {
+        const addition = calculateVoteAddition(oldVoteType, newVoteType);
+
+        return this.questionRepository.updateVoteCount(questionId, addition);
+      })
+    );
+  }
+}

@@ -24,7 +24,7 @@ custom:
     useChildProcesses: true
   middleware:
     pre:
-      - src/middleware/source-map.noop
+      - src/middleware/global-imports.noop
     pos:
       - catch: src/middleware/error-handler.errorHandler
 
@@ -60,9 +60,7 @@ provider:
 functions:
   # Meeting endpoints
   getMeeting:
-    handler:
-      - src/meeting/schema.getMeetingValidator
-      - src/meeting/controller.getMeeting
+    handler: src/meeting/handler.getMeeting
     events:
       - http:
           method: get
@@ -73,9 +71,7 @@ functions:
             authorizerId:
               Ref: APIGatewayCognitoAuthorizer
   createMeeting:
-    handler:
-      - src/meeting/schema.createMeetingValidator
-      - src/meeting/controller.createMeeting
+    handler: src/meeting/handler.createMeeting
     events:
       - http:
           method: post
@@ -86,9 +82,7 @@ functions:
             authorizerId:
               Ref: APIGatewayCognitoAuthorizer
   deleteMeeting:
-    handler:
-      - src/meeting/schema.deleteMeetingValidator
-      - src/meeting/controller.deleteMeeting
+    handler: src/meeting/handler.deleteMeeting
     events:
       - http:
           method: delete
@@ -99,9 +93,7 @@ functions:
             authorizerId:
               Ref: APIGatewayCognitoAuthorizer
   updateMeeting:
-    handler:
-      - src/meeting/schema.updateMeetingValidator
-      - src/meeting/controller.updateMeeting
+    handler: src/meeting/handler.updateMeeting
     events:
       - http:
           method: patch
@@ -112,9 +104,7 @@ functions:
             authorizerId:
               Ref: APIGatewayCognitoAuthorizer
   getQuestionsOfMeeting:
-    handler:
-      - src/meeting/schema.getQuestionsOfMeetingValidator
-      - src/meeting/controller.getQuestionsOfMeeting
+    handler: src/meeting/handler.getQuestionsOfMeeting
     events:
       - http:
           method: get
@@ -126,9 +116,7 @@ functions:
               Ref: APIGatewayCognitoAuthorizer
   # Question endpoints
   createQuestion:
-    handler:
-      - src/question/schema.createQuestionValidator
-      - src/question/controller.createQuestion
+    handler: src/question/handler.createQuestion
     events:
       - http:
           method: post
@@ -139,20 +127,18 @@ functions:
             authorizerId:
               Ref: APIGatewayCognitoAuthorizer
   updateVoteCountsOfQuestions:
-    handler: src/question/controller.updateVoteCountsOfQuestions
+    handler: src/question/handler.updateVoteCountsOfQuestions
     events:
       - stream:
           enabled: true
           type: dynamodb
           arn:
-            Fn::ImportValue: VotesTableStreamArn
+            Fn::GetAtt: [VotesTable, StreamArn]
           batchSize: 10
           startingPosition: LATEST
   # Vote endpoints
   voteQuestion:
-    handler:
-      - src/vote/schema.voteQuestionValidator
-      - src/vote/controller.voteQuestion
+    handler: src/vote/handler.voteQuestion
     events:
       - http:
           method: put
@@ -163,9 +149,7 @@ functions:
             authorizerId:
               Ref: APIGatewayCognitoAuthorizer
   getVotesOfCurrentUser:
-    handler:
-      - src/vote/schema.getVotesOfCurrentUserValidator
-      - src/vote/controller.getVotesOfCurrentUser
+    handler: src/vote/handler.getVotesOfCurrentUser
     events:
       - http:
           method: get

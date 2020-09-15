@@ -1,45 +1,44 @@
 import docClient from '../util/document-client';
 import { Vote } from './Vote';
+import { Service } from 'typedi';
 
 const TableName = `${process.env.VOTES_TABLE}-${process.env.NODE_ENV}`;
 
-export const voteQuestion = async ({
-  meetingId,
-  questionId,
-  userId,
-  type,
-}: Vote): Promise<Vote> => {
-  const voteDocument = {
-    userId,
+@Service()
+export class VoteRepository {
+  async voteQuestion({ meetingId, questionId, userId, type }: Vote): Promise<Vote> {
+    const voteDocument = {
+      userId,
+      meetingId,
+      questionId,
+      type,
+    };
+    const params = {
+      TableName,
+      Item: voteDocument,
+    };
+
+    await docClient.put(params).promise();
+
+    return voteDocument;
+  }
+
+  async getVotesOfCurrentUser({
     meetingId,
-    questionId,
-    type,
-  };
-  const params = {
-    TableName,
-    Item: voteDocument,
-  };
+    userId,
+  }: Pick<Vote, 'meetingId' | 'userId'>): Promise<Vote[]> {
+    const params = {
+      TableName,
+      IndexName: 'meetingId-userId-index',
+      KeyConditionExpression: 'meetingId = :meetingId AND userId = :userId',
+      ExpressionAttributeValues: {
+        ':meetingId': meetingId,
+        ':userId': userId,
+      },
+    };
 
-  await docClient.put(params).promise();
+    const { Items: votes = [] } = await docClient.query(params).promise();
 
-  return voteDocument;
-};
-
-export const getVotesOfCurrentUser = async ({
-  meetingId,
-  userId,
-}: Pick<Vote, 'meetingId' | 'userId'>): Promise<Vote[]> => {
-  const params = {
-    TableName,
-    IndexName: 'meetingId-userId-index',
-    KeyConditionExpression: 'meetingId = :meetingId AND userId = :userId',
-    ExpressionAttributeValues: {
-      ':meetingId': meetingId,
-      ':userId': userId,
-    },
-  };
-
-  const { Items: votes = [] } = await docClient.query(params).promise();
-
-  return votes as Vote[];
-};
+    return votes as Vote[];
+  }
+}
