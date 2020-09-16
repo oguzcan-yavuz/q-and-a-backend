@@ -28,7 +28,7 @@
     "husky": "^4.3.0",
     "jest": "^26.4.2",
     "lint-staged": "^10.3.0",
-    "prettier": "^2.1.1",
+    "prettier": "^2.1.2",
     "serverless": "^1.81.1",
     "serverless-dotenv-plugin": "^3.0.0",
     "serverless-dynamodb-local": "^0.2.30",
