@@ -9,7 +9,6 @@ jspm_packages
 .webpack
 
 # Editor
-.vscode/
 .idea/
 *-workspace
 
