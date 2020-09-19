@@ -1,5 +1,5 @@
-import { NotFoundException } from '../error/not-found-exception';
-import { ConflictException } from '../error/conflict-exception';
+import { NotFoundException } from '../common/error/not-found-exception';
+import { ConflictException } from '../common/error/conflict-exception';
 import { QuestionService } from '../question/service';
 import { GetQuestionsOfMeetingResponse } from '../question/Question';
 import { Meeting, MeetingBody, MeetingStatus } from './Meeting';

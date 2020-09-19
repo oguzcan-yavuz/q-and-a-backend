@@ -2,8 +2,8 @@ import { APIGatewayProxyWithCognitoAuthorizerEvent, APIGatewayProxyResult } from
 import { MeetingService } from './service';
 import * as HttpStatus from 'http-status-codes';
 import { Meeting, MeetingBody } from './Meeting';
-import { createProxyResult } from '../util';
-import { validate } from '../util/validate';
+import { createProxyResult } from '../common/util';
+import { validate } from '../common/util/validate';
 import {
   getMeetingSchema,
   createMeetingSchema,

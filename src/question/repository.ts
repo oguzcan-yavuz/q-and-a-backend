@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import docClient from '../util/document-client';
+import docClient from '../common/util/document-client';
 import { Meeting } from '../meeting/Meeting';
 import {
   GetQuestionsOfMeetingResponse,
@@ -7,7 +7,7 @@ import {
   QuestionStatus,
   QuestionBodyWithUserId,
 } from './Question';
-import { NotFoundException } from '../error/not-found-exception';
+import { NotFoundException } from '../common/error/not-found-exception';
 import { Service } from 'typedi';
 const TableName = `${process.env.QUESTIONS_TABLE}-${process.env.NODE_ENV}`;
 

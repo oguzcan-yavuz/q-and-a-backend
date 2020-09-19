@@ -1,4 +1,4 @@
-import docClient from '../util/document-client';
+import docClient from '../common/util/document-client';
 import { Vote } from './Vote';
 import { Service } from 'typedi';
 

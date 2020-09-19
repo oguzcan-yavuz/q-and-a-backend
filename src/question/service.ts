@@ -1,6 +1,6 @@
-import { NotFoundException } from '../error/not-found-exception';
+import { NotFoundException } from '../common/error/not-found-exception';
 import { Meeting } from '../meeting/Meeting';
-import { calculateVoteAddition } from '../util';
+import { calculateVoteAddition } from '../common/util';
 import { GetQuestionsOfMeetingResponse, Question, QuestionBodyWithUserId } from './Question';
 import { QuestionRepository } from './repository';
 import { VoteType } from '../vote/Vote';
