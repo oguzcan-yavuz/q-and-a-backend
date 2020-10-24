@@ -1,8 +1,7 @@
 {
   "name": "q-and-a-backend",
   "version": "1.0.0",
-  "description": "Serverless webpack example using Typescript",
-  "main": "handler.js",
+  "description": "q-and-a Rest API",
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
@@ -45,10 +44,9 @@
     "webpack": "^4.44.2",
     "webpack-node-externals": "^2.5.2"
   },
-  "author": "The serverless webpack authors (https://github.com/elastic-coders/serverless-webpack)",
-  "license": "MIT",
+  "author": "Oğuzcan Yavuz",
   "engines": {
-    "node": "~12.18.3"
+    "node": "~12.19.0"
   },
   "husky": {
     "hooks": {
