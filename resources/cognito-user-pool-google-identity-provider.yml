@@ -12,7 +12,8 @@ Resources:
         authorize_scopes: profile email openid
       ProviderName: Google
       ProviderType: Google
-      UserPoolId: !Ref CognitoUserPool
+      UserPoolId:
+        Ref: CognitoUserPool
 Outputs:
   UserPoolGoogleIdentityProvider:
     Value:

@@ -10,7 +10,10 @@
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --format verbose",
     "lint:fix": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --fix --format verbose",
     "prettier": "prettier --write src/**",
-    "deploy:dev": "serverless deploy --stage development --region us-east-1 --verbose --conceal"
+    "deploy:dev": "serverless deploy --stage development --region us-west-2 --verbose --conceal",
+    "deploy:prod": "serverless deploy --stage production --region us-west-2 --verbose --conceal",
+    "deploy:infra:dev": "npm run deploy:dev -- -c serverless.infra.yml",
+    "deploy:infra:prod": "npm run deploy:prod -- -c serverless.infra.yml"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",

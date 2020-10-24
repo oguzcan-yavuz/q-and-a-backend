@@ -24,9 +24,9 @@ custom:
     useChildProcesses: true
   middleware:
     pre:
-      - src/middleware/global-imports.noop
+      - src/common/middleware/global-imports.noop
     pos:
-      - catch: src/middleware/error-handler.errorHandler
+      - catch: src/common/middleware/error-handler.errorHandler
 
 plugins:
   - serverless-dotenv-plugin
@@ -37,20 +37,13 @@ plugins:
   - serverless-offline
 
 resources:
-  - ${file(./resources/dynamodb-meetings-table.yml)}
-  - ${file(./resources/dynamodb-questions-table.yml)}
-  - ${file(./resources/dynamodb-votes-table.yml)}
-  - ${file(./resources/cognito-user-pool.yml)}
-  - ${file(./resources/cognito-user-pool-domain.yml)}
-  - ${file(./resources/cognito-user-pool-google-identity-provider.yml)}
-  - ${file(./resources/cognito-user-pool-web-client.yml)}
   - ${file(./resources/api-gateway-cognito-authorizer.yml)}
 
 provider:
   name: aws
   runtime: nodejs12.x
   stage: ${opt:stage, 'development'}
-  region: ${opt:region, 'us-east-1'}
+  region: ${opt:region, 'us-west-2'}
   profile: ${opt:profile, 'q-and-a-admin'}
   apiGateway:
     minimumCompressionSize: 1024
@@ -133,7 +126,7 @@ functions:
           enabled: true
           type: dynamodb
           arn:
-            Fn::GetAtt: [VotesTable, StreamArn]
+            Fn::ImportValue: VotesTableStreamArn-${self:provider.stage}
           batchSize: 10
           startingPosition: LATEST
   # Vote endpoints
