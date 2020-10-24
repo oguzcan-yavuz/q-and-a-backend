@@ -1,14 +1,14 @@
 {
   "name": "q-and-a-backend",
   "version": "1.0.0",
-  "description": "q-and-a Rest API",
+  "description": "q-and-a backend",
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
     "offline": "serverless offline start --printOutput",
     "cm": "npx git-cz",
-    "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --format verbose",
-    "lint:fix": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --fix --format verbose",
+    "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx,js,jsx}' --format verbose",
+    "lint:fix": "tslint -c tslint.json 'src/**/*.{ts,tsx,js,jsx}' --fix --format verbose",
     "prettier": "prettier --write src/**",
     "deploy:dev": "serverless deploy --stage development --region us-west-2 --verbose --conceal",
     "deploy:prod": "serverless deploy --stage production --region us-west-2 --verbose --conceal",
@@ -62,7 +62,7 @@
     }
   },
   "lint-staged": {
-    "*.{ts,tsx,js,css,md}": [
+    "*.{ts,tsx,js,jsx}": [
       "npm run lint:fix",
       "npm run prettier"
     ]
