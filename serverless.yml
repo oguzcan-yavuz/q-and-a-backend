@@ -10,11 +10,6 @@ custom:
       port: ${self:custom.dynamodb-offline-port}
       dbPath: db/
       migrate: true
-  serverless-offline-dynamodb-streams:
-    endpoint: http://localhost:${self:custom.dynamodb-offline-port}
-    region: localhost
-    accessKeyId: root
-    secretAccessKey: root
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
@@ -32,7 +27,6 @@ plugins:
   - serverless-dotenv-plugin
   - serverless-middleware
   - serverless-webpack
-  - serverless-offline-dynamodb-streams
   - serverless-dynamodb-local
   - serverless-offline
 
@@ -47,8 +41,6 @@ provider:
   profile: ${opt:profile, 'q-and-a-admin'}
   apiGateway:
     minimumCompressionSize: 1024
-  environment:
-    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
 
 functions:
   # Meeting endpoints
