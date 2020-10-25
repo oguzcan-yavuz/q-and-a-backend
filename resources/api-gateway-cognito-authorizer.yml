@@ -8,10 +8,7 @@ Resources:
       RestApiId:
         Ref: ApiGatewayRestApi
       ProviderARNs:
-        - Fn::GetAtt:
-            - CognitoUserPool
-            - Arn
-    DependsOn: CognitoUserPool
+        - Fn::ImportValue: CognitoUserPoolArn-${self:provider.stage}
 Outputs:
   CognitoAuthorizer:
     Value:

@@ -4,10 +4,10 @@ import {
   APIGatewayProxyWithCognitoAuthorizerEvent,
 } from 'aws-lambda';
 import * as HttpStatus from 'http-status-codes';
-import { createProxyResult } from '../util';
+import { createProxyResult } from '../common/util';
 import { QuestionBody } from './Question';
 import { QuestionService } from './service';
-import { validate } from '../util/validate';
+import { validate } from '../common/util/validate';
 import { createQuestionSchema } from './schema';
 import { Service } from 'typedi';
 

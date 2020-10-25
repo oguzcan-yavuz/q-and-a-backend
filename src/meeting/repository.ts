@@ -1,8 +1,8 @@
 import { Meeting, MeetingBody, MeetingStatus } from './Meeting';
-import docClient from '../util/document-client';
+import docClient from '../common/util/document-client';
 import { v4 as uuidv4 } from 'uuid';
-import { NotFoundException } from '../error/not-found-exception';
-import { generateSetExpressions } from '../util';
+import { NotFoundException } from '../common/error/not-found-exception';
+import { generateSetExpressions } from '../common/util';
 import { Service } from 'typedi';
 const TableName = `${process.env.MEETINGS_TABLE}-${process.env.NODE_ENV}`;
 

@@ -2,9 +2,9 @@ import { APIGatewayProxyWithCognitoAuthorizerEvent, APIGatewayProxyResult } from
 import { VoteService } from './service';
 import * as HttpStatus from 'http-status-codes';
 import { Vote } from './Vote';
-import { createProxyResult } from '../util';
+import { createProxyResult } from '../common/util';
 import { Service } from 'typedi';
-import { validate } from '../util/validate';
+import { validate } from '../common/util/validate';
 import { voteQuestionSchema, getVotesOfCurrentUserSchema } from './schema';
 
 @Service()

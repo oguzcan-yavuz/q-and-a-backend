@@ -1,0 +1,20 @@
+service:
+  name: q-and-a-infrastructure
+
+provider:
+  name: aws
+  stage: ${opt:stage, 'development'}
+  region: ${opt:region, 'us-west-2'}
+  profile: ${opt:profile, 'q-and-a-admin'}
+
+plugins:
+  - serverless-dotenv-plugin
+
+resources:
+  - ${file(./resources/dynamodb-meetings-table.yml)}
+  - ${file(./resources/dynamodb-questions-table.yml)}
+  - ${file(./resources/dynamodb-votes-table.yml)}
+  - ${file(./resources/cognito-user-pool.yml)}
+  - ${file(./resources/cognito-user-pool-domain.yml)}
+  - ${file(./resources/cognito-user-pool-google-identity-provider.yml)}
+  - ${file(./resources/cognito-user-pool-web-client.yml)}

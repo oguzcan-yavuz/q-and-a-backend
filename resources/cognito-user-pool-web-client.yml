@@ -29,7 +29,8 @@ Resources:
       RefreshTokenValidity: 30
       SupportedIdentityProviders:
         - Google
-      UserPoolId: !Ref CognitoUserPool
+      UserPoolId: 
+        Ref: CognitoUserPool
       WriteAttributes:
         - email
         - name

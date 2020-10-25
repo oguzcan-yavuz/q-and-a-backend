@@ -49,4 +49,4 @@ Outputs:
     Value:
       Fn::GetAtt: [ VotesTable, StreamArn ]
     Export:
-      Name: VotesTableStreamArn
+      Name: VotesTableStreamArn-${self:provider.stage}

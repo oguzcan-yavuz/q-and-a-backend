@@ -46,3 +46,8 @@ Outputs:
   UserPoolId:
     Value:
       Ref: CognitoUserPool
+  CognitoUserPoolArn:
+    Value:
+      Fn::GetAtt: [ CognitoUserPool, Arn ]
+    Export:
+      Name: CognitoUserPoolArn-${self:provider.stage}
