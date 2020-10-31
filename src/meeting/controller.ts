@@ -1,6 +1,6 @@
 import { APIGatewayProxyWithCognitoAuthorizerEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { MeetingService } from './service';
-import * as HttpStatus from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import { Meeting, MeetingBody } from './Meeting';
 import { createProxyResult } from '../common/util';
 import { validate } from '../common/util/validate';
@@ -24,7 +24,7 @@ export class MeetingController {
     const meetingId = eventWithParsedBody.pathParameters!.meetingId as Meeting['id'];
     const meeting = await this.meetingService.getMeeting(meetingId);
 
-    return createProxyResult(HttpStatus.OK, meeting);
+    return createProxyResult(StatusCodes.OK, meeting);
   }
 
   async createMeeting(
@@ -34,7 +34,7 @@ export class MeetingController {
     const meeting = eventWithParsedBody.body! as MeetingBody;
     const { id } = await this.meetingService.createMeeting(meeting);
 
-    return createProxyResult(HttpStatus.CREATED, { id });
+    return createProxyResult(StatusCodes.CREATED, { id });
   }
 
   async deleteMeeting(
@@ -44,7 +44,7 @@ export class MeetingController {
     const meetingId = eventWithParsedBody.pathParameters!.meetingId as Meeting['id'];
     await this.meetingService.deleteMeeting(meetingId);
 
-    return createProxyResult(HttpStatus.NO_CONTENT, {});
+    return createProxyResult(StatusCodes.NO_CONTENT, {});
   }
 
   async updateMeeting(
@@ -55,7 +55,7 @@ export class MeetingController {
     const meeting = JSON.parse(event.body!) as Partial<MeetingBody>;
     await this.meetingService.updateMeeting(meetingId, meeting);
 
-    return createProxyResult(HttpStatus.NO_CONTENT, {});
+    return createProxyResult(StatusCodes.NO_CONTENT, {});
   }
 
   async getQuestionsOfMeeting(
@@ -65,6 +65,6 @@ export class MeetingController {
     const meetingId = eventWithParsedBody.pathParameters!.meetingId as Meeting['id'];
     const questions = await this.meetingService.getQuestionsOfMeeting(meetingId);
 
-    return createProxyResult(HttpStatus.OK, questions);
+    return createProxyResult(StatusCodes.OK, questions);
   }
 }

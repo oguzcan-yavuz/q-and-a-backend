@@ -1,6 +1,6 @@
 import { APIGatewayProxyWithCognitoAuthorizerEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { VoteService } from './service';
-import * as HttpStatus from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import { Vote } from './Vote';
 import { createProxyResult } from '../common/util';
 import { Service } from 'typedi';
@@ -30,7 +30,7 @@ export class VoteController {
       type,
     });
 
-    return createProxyResult(HttpStatus.OK, voteResponse);
+    return createProxyResult(StatusCodes.OK, voteResponse);
   }
 
   async getVotesOfCurrentUser(
@@ -47,6 +47,6 @@ export class VoteController {
     } = event;
     const userVotes = await this.voteService.getVotesOfCurrentUser({ meetingId, userId });
 
-    return createProxyResult(HttpStatus.OK, userVotes);
+    return createProxyResult(StatusCodes.OK, userVotes);
   }
 }
