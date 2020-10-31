@@ -3,8 +3,8 @@ import {
   APIGatewayProxyResult,
   APIGatewayProxyWithCognitoAuthorizerEvent,
 } from 'aws-lambda';
-import * as HttpStatus from 'http-status-codes';
 import { createProxyResult } from '../common/util';
+import { StatusCodes } from 'http-status-codes';
 import { QuestionBody } from './Question';
 import { QuestionService } from './service';
 import { validate } from '../common/util/validate';
@@ -29,7 +29,7 @@ export class QuestionController {
     } = event;
     const { id } = await this.questionService.createQuestion({ ...questionBody, userId });
 
-    return createProxyResult(HttpStatus.CREATED, { id });
+    return createProxyResult(StatusCodes.CREATED, { id });
   }
 
   async updateVoteCountsOfQuestions(event: DynamoDBStreamEvent): Promise<void> {

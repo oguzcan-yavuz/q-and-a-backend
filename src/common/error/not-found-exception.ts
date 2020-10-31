@@ -1,10 +1,10 @@
 import { HttpException } from './http-exception';
-import * as HttpStatus from 'http-status-codes';
+import { StatusCodes, getReasonPhrase } from 'http-status-codes';
 
 export class NotFoundException extends HttpException {
   constructor() {
-    const statusCode = HttpStatus.NOT_FOUND;
-    const message = HttpStatus.getStatusText(statusCode);
+    const statusCode = StatusCodes.NOT_FOUND;
+    const message = getReasonPhrase(statusCode);
     super(statusCode, message);
   }
 }
