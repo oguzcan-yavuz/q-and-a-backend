@@ -34,7 +34,7 @@
     "serverless": "^1.81.1",
     "serverless-dotenv-plugin": "^3.1.0",
     "serverless-dynamodb-local": "^0.2.30",
-    "serverless-middleware": "0.0.10",
+    "serverless-middleware": "0.0.11",
     "serverless-offline": "^6.8.0",
     "serverless-webpack": "^5.3.5",
     "ts-jest": "^26.4.4",
