@@ -23,7 +23,7 @@
     "typedi": "^0.8.0"
   },
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.68",
+    "@types/aws-lambda": "^8.10.82",
     "@types/jest": "^26.0.19",
     "@types/node": "^14.14.17",
     "cz-conventional-changelog": "^3.3.0",
